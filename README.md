@@ -1,6 +1,10 @@
 OpenTweet
 =========
 
+Known issues:
+- Update target back to 14.1
+
+
 Hi! Welcome to your iOS coding excercise.
 
 This is a very simple twitter like client. You'll find a json file under Data/ with a short tweet timeline. You are asked to write the app that will display the tweets, similar to what a Twitter client would do.
