@@ -7,6 +7,8 @@ Known issues:
 - There is a warning in Main.storyboard, if you reset the frames on the TimeLineViewController the warnings go away but some of the content goes off screen. Doing this will not break the autolayout but I am leaving it as is for visiblity, for now.
 - Need to fix spacing in tweets
 
+- CREATE A SUB VIEW AND THROW CONTENT INTO VIEW, MAKE A MIN HEIGHT FOR SUBVIEW
+
 
 Hi! Welcome to your iOS coding excercise.
 

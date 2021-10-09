@@ -40,8 +40,26 @@ class Tweets {
                 for i in 0..<timeline.count {
                     let dict: Dictionary = timeline[i] as! [String: String]
                     //Get the data from the dictionary and create a tweet
-                    let tweet = Tweet(id: dict[idKey] ?? "", author: dict[authorKey] ?? "", content: dict[contentKey] ?? "", avatar: dict[avatarKey] ?? "", date: dict[dateKey] ?? "")
                     
+                    var formattedDateString: String = ""
+                    //Get the date from the json, its in ISO format
+                    let isoDate = dict[dateKey] ?? ""
+                    let isoDateFormatter = DateFormatter()
+                    //Set the locale to the user's locale
+                    isoDateFormatter.locale = Locale.current
+                    //Set the formatter to the ISO format
+                    isoDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+                        
+                    //Create the date if its valid
+                    if let date = isoDateFormatter.date(from: isoDate) {
+                        let customDateFormatter = DateFormatter()
+                        //Set the date format to the date that we want
+                        customDateFormatter.dateFormat = "yyyy-MM-dd"
+                        //Set our formatted date
+                        formattedDateString = customDateFormatter.string(from: date)
+                    }
+                    
+                    let tweet = Tweet(id: dict[idKey] ?? "", author: dict[authorKey] ?? "", content: dict[contentKey] ?? "", avatar: dict[avatarKey] ?? "", date: formattedDateString)
                     feed.append(tweet)
                 }
             } else {
@@ -50,6 +68,9 @@ class Tweets {
         } catch {
           print(error.localizedDescription)
         }
+        //Send a notification saying that the tweets are ready to be loaded
+        NotificationCenter.default.post(name: .timelineDataParsed, object: nil, userInfo: nil)
+        
         //Return the array of tweets
         return feed
     }

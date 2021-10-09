@@ -10,15 +10,30 @@ import UIKit
 
 class TimelineViewController: UIViewController {
 
-    let tweets = Tweets.feedFromBundle()
+    var tweets = [Tweet]()
     @IBOutlet weak var timelineTableView: UITableView!
     
 	override func viewDidLoad() {
 		super.viewDidLoad()
+        
+        DispatchQueue.global(qos: .background).async {
+            self.tweets = Tweets.feedFromBundle()
+        }
 
         timelineTableView.dataSource = self
         timelineTableView.rowHeight = UITableView.automaticDimension
         timelineTableView.estimatedRowHeight = 600
+        
+        //Add observers for our notifications
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTweets), name: .timelineDataParsed, object: nil)
+    }
+    
+    @objc
+    func reloadTweets() {
+        //Reload the data
+        DispatchQueue.main.async {
+            self.timelineTableView.reloadData()
+        }
     }
 }
 
@@ -30,17 +45,13 @@ extension TimelineViewController: UITableViewDataSource {
         
         let tweet = tweets[indexPath.row]
         
-        cell.authorLabel.text = tweet.author
+        cell.authorDateLabel.text = tweet.author + " - " + tweet.date
         //cell.dateLabel.text = tweet.date
         cell.contentLabel.text = tweet.content
         
         //TODO: Get image
         //cell.authorImageView.image = tweet.avatar
         cell.authorImageView.layer.cornerRadius = cell.authorImageView.frame.size.width / 2
-        
-        let height = cell.heightAnchor
-        
-        print(height)
         
         return cell
     }

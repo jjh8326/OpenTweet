@@ -9,8 +9,7 @@
 import UIKit
 
 class TweetTableViewCell: UITableViewCell {
-    @IBOutlet weak var authorLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var authorDateLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
     @IBOutlet weak var authorImageView: UIImageView!
 }

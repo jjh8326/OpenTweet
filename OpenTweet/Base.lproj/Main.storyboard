@@ -36,7 +36,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NfK-d4-eCC">
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TweetCell" rowHeight="350" id="o3M-C3-dQU" customClass="TweetTableViewCell" customModule="OpenTweet" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="350"/>
@@ -57,48 +57,50 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="64" id="tfH-hR-Ztg"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Author" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3eD-MS-hMQ">
-                                                    <rect key="frame" x="92" y="11" width="293" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author XX/XX/XXX" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3eD-MS-hMQ">
+                                                    <rect key="frame" x="92" y="11" width="247" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="293" id="Eux-u2-K5q"/>
                                                         <constraint firstAttribute="height" constant="21" id="HzB-TD-j7c"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="749" text="This is a sample tweet." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ufB-1V-wKk">
-                                                    <rect key="frame" x="92" y="40" width="247" height="299"/>
+                                                    <rect key="frame" x="92" y="34" width="247" height="305"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="64" id="Fd2-Tb-DDw"/>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="Fd2-Tb-DDw"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <nil key="textColor"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="Iua-9k-eb5" firstAttribute="top" secondItem="P99-fa-Qpd" secondAttribute="top" constant="12" id="46k-kr-tLe"/>
                                                 <constraint firstItem="Iua-9k-eb5" firstAttribute="leading" secondItem="P99-fa-Qpd" secondAttribute="leading" constant="12" id="8aS-j8-AHz"/>
-                                                <constraint firstItem="ufB-1V-wKk" firstAttribute="top" secondItem="3eD-MS-hMQ" secondAttribute="bottom" constant="8" id="CpF-32-eCt"/>
+                                                <constraint firstItem="ufB-1V-wKk" firstAttribute="top" secondItem="3eD-MS-hMQ" secondAttribute="bottom" constant="2" id="CpF-32-eCt"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="3eD-MS-hMQ" secondAttribute="trailing" constant="21" id="OuE-tn-3c9"/>
                                                 <constraint firstItem="3eD-MS-hMQ" firstAttribute="top" secondItem="P99-fa-Qpd" secondAttribute="topMargin" id="fpA-Iq-6vF"/>
                                                 <constraint firstItem="ufB-1V-wKk" firstAttribute="leading" secondItem="Iua-9k-eb5" secondAttribute="trailing" constant="16" id="gT5-zi-9dU"/>
                                                 <constraint firstItem="ufB-1V-wKk" firstAttribute="bottom" secondItem="P99-fa-Qpd" secondAttribute="bottomMargin" id="oS9-KM-xnQ"/>
+                                                <constraint firstItem="ufB-1V-wKk" firstAttribute="top" secondItem="3eD-MS-hMQ" secondAttribute="bottom" constant="2" id="t9Z-Or-uid"/>
                                                 <constraint firstItem="3eD-MS-hMQ" firstAttribute="trailing" secondItem="ufB-1V-wKk" secondAttribute="trailing" id="tci-KT-TZd"/>
                                                 <constraint firstItem="3eD-MS-hMQ" firstAttribute="leading" secondItem="ufB-1V-wKk" secondAttribute="leading" id="ueM-92-EKZ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="authorDateLabel" destination="3eD-MS-hMQ" id="YRv-1n-Fmp"/>
                                             <outlet property="authorImageView" destination="Iua-9k-eb5" id="mzD-Rs-027"/>
-                                            <outlet property="authorLabel" destination="3eD-MS-hMQ" id="alc-WS-lIG"/>
                                             <outlet property="contentLabel" destination="ufB-1V-wKk" id="Yw9-Gz-VSb"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="NfK-d4-eCC" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="JhU-Dh-eQf"/>
                             <constraint firstAttribute="trailing" secondItem="NfK-d4-eCC" secondAttribute="trailing" id="PnQ-l5-Twd"/>
