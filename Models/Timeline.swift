@@ -13,7 +13,7 @@ struct Tweet {
     let author: String
     let content: String
     let avatar: String
-    let data: String
+    let date: String
 }
 
 //TOOD: Put target back
@@ -40,7 +40,7 @@ class Tweets {
                 for i in 0..<timeline.count {
                     let dict: Dictionary = timeline[i] as! [String: String]
                     //Get the data from the dictionary and create a tweet
-                    let tweet = Tweet(id: dict[idKey] ?? "", author: dict[authorKey] ?? "", content: dict[contentKey] ?? "", avatar: dict[avatarKey] ?? "", data: dict[dateKey] ?? "")
+                    let tweet = Tweet(id: dict[idKey] ?? "", author: dict[authorKey] ?? "", content: dict[contentKey] ?? "", avatar: dict[avatarKey] ?? "", date: dict[dateKey] ?? "")
                     
                     feed.append(tweet)
                 }
