@@ -38,7 +38,8 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NfK-d4-eCC">
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
-                                <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.093526117503643036" green="0.2252647876739502" blue="0.60494118928909302" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="separatorColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TweetCell" rowHeight="350" id="o3M-C3-dQU" customClass="TweetTableViewCell" customModule="OpenTweet" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="44.5" width="375" height="350"/>
@@ -47,9 +48,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="350"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Iua-9k-eb5">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultAvatar" translatesAutoresizingMaskIntoConstraints="NO" id="Iua-9k-eb5">
                                                     <rect key="frame" x="12" y="12" width="64" height="64"/>
-                                                    <color key="backgroundColor" systemColor="linkColor"/>
+                                                    <color key="backgroundColor" systemColor="systemGray2Color"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="64" id="O4q-Dy-9P8"/>
                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="64" id="cSR-xN-GWb"/>
@@ -79,7 +80,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="backgroundColor" systemColor="tintColor"/>
                                             <constraints>
                                                 <constraint firstItem="Iua-9k-eb5" firstAttribute="top" secondItem="P99-fa-Qpd" secondAttribute="top" constant="12" id="46k-kr-tLe"/>
                                                 <constraint firstItem="Iua-9k-eb5" firstAttribute="leading" secondItem="P99-fa-Qpd" secondAttribute="leading" constant="12" id="8aS-j8-AHz"/>
@@ -93,16 +94,19 @@
                                                 <constraint firstItem="3eD-MS-hMQ" firstAttribute="leading" secondItem="ufB-1V-wKk" secondAttribute="leading" id="ueM-92-EKZ"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.093526117503643036" green="0.2252647876739502" blue="0.60494118928909302" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" red="0.093526117503643036" green="0.2252647876739502" blue="0.60494118928909302" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <outlet property="authorDateLabel" destination="3eD-MS-hMQ" id="YRv-1n-Fmp"/>
-                                            <outlet property="authorImageView" destination="Iua-9k-eb5" id="mzD-Rs-027"/>
+                                            <outlet property="avatarImageView" destination="Iua-9k-eb5" id="pLl-ve-bfI"/>
                                             <outlet property="contentLabel" destination="ufB-1V-wKk" id="Yw9-Gz-VSb"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" red="0.093526117503643036" green="0.2252647876739502" blue="0.60494118928909302" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="NfK-d4-eCC" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="JhU-Dh-eQf"/>
                             <constraint firstAttribute="trailing" secondItem="NfK-d4-eCC" secondAttribute="trailing" id="PnQ-l5-Twd"/>
@@ -125,7 +129,11 @@
         </scene>
     </scenes>
     <resources>
-        <systemColor name="linkColor">
+        <image name="defaultAvatar" width="360" height="360"/>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="tintColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>

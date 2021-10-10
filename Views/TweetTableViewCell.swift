@@ -11,5 +11,5 @@ import UIKit
 class TweetTableViewCell: UITableViewCell {
     @IBOutlet weak var authorDateLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
-    @IBOutlet weak var authorImageView: UIImageView!
+    @IBOutlet weak var avatarImageView: UIImageView!
 }

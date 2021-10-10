@@ -8,6 +8,8 @@
 
 import UIKit
 
+var avatarCache: NSCache = NSCache<NSString, UIImage>()
+
 class TimelineViewController: UIViewController {
 
     var tweets = [Tweet]()
@@ -48,9 +50,34 @@ extension TimelineViewController: UITableViewDataSource {
         cell.authorDateLabel.text = tweet.author + " - " + tweet.date
         cell.contentLabel.text = tweet.content
         
-        //TODO: Get image
-        //cell.authorImageView.image = tweet.avatar
-        cell.authorImageView.layer.cornerRadius = cell.authorImageView.frame.size.width / 2
+        //Make our avatar's image circular
+        cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.size.width / 2
+        
+        if (tweet.avatarURL != "") {
+            //Get the avatar's image URL from the tweet
+            guard let url = URL(string: tweet.avatarURL) else {
+                print("Invalid URL used")
+                return cell
+            }
+            //If the image exists in the cache then set the avatar's image
+            if let image = avatarCache.object(forKey: tweet.avatarURL as NSString) {
+                cell.avatarImageView.image = image
+            } else {
+                //If it does not exist then download it
+                URLSession.shared.dataTask(with: url) { data, response, error in
+                    if error != nil {
+                        print(error!)
+                        return
+                    }
+                    if let image = UIImage(data: data!) {
+                        avatarCache.setObject(image, forKey: tweet.avatarURL as NSString)
+                        DispatchQueue.main.async {
+                            cell.avatarImageView.image = image
+                        }
+                    }
+                }.resume()
+            }
+        }
         
         return cell
     }

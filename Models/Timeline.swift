@@ -12,7 +12,7 @@ struct Tweet {
     let id: String
     let author: String
     let content: String
-    let avatar: String
+    let avatarURL: String
     let date: String
 }
 
@@ -53,8 +53,14 @@ class Tweets {
         //Create a tweet from each array in the dictionary
         for i in 0..<timeline.count {
             let dict: Dictionary = timeline[i] as! [String: String]
+            //Assuming it's standard for all the user names to start with @, lets remove the @ symbol
+            var username = ""
+            if let authorValue = dict[authorKey] {
+                username = authorValue.substring(from: authorValue.index(authorValue.startIndex, offsetBy: 1))
+            }
+            
             //Get the data from the dictionary and create a tweet
-            let tweet = Tweet(id: dict[idKey] ?? "", author: dict[authorKey] ?? "", content: dict[contentKey] ?? "", avatar: dict[avatarKey] ?? "", date: createTwitterLikeDate(dict[dateKey] ?? ""))
+            let tweet = Tweet(id: dict[idKey] ?? "", author: username ?? "", content: dict[contentKey] ?? "", avatarURL: dict[avatarKey] ?? "", date: createTwitterLikeDate(dict[dateKey] ?? ""))
             feed.append(tweet)
         }
         return feed
