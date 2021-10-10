@@ -46,7 +46,6 @@ extension TimelineViewController: UITableViewDataSource {
         let tweet = tweets[indexPath.row]
         
         cell.authorDateLabel.text = tweet.author + " - " + tweet.date
-        //cell.dateLabel.text = tweet.date
         cell.contentLabel.text = tweet.content
         
         //TODO: Get image

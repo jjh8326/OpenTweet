@@ -16,10 +16,8 @@ struct Tweet {
     let date: String
 }
 
-//TOOD: Put target back
-
 class Tweets {
-    // Get data from JSON
+    //Get data from JSON
     static func feedFromBundle() -> [Tweet] {
         var feed = [Tweet]()
         do {
@@ -35,33 +33,9 @@ class Tweets {
                     print("No data in timeline")
                     return []
                 }
-                
-                //Create a tweet from each array in the dictionary
-                for i in 0..<timeline.count {
-                    let dict: Dictionary = timeline[i] as! [String: String]
-                    //Get the data from the dictionary and create a tweet
-                    
-                    var formattedDateString: String = ""
-                    //Get the date from the json, its in ISO format
-                    let isoDate = dict[dateKey] ?? ""
-                    let isoDateFormatter = DateFormatter()
-                    //Set the locale to the user's locale
-                    isoDateFormatter.locale = Locale.current
-                    //Set the formatter to the ISO format
-                    isoDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-                        
-                    //Create the date if its valid
-                    if let date = isoDateFormatter.date(from: isoDate) {
-                        let customDateFormatter = DateFormatter()
-                        //Set the date format to the date that we want
-                        customDateFormatter.dateFormat = "yyyy-MM-dd"
-                        //Set our formatted date
-                        formattedDateString = customDateFormatter.string(from: date)
-                    }
-                    
-                    let tweet = Tweet(id: dict[idKey] ?? "", author: dict[authorKey] ?? "", content: dict[contentKey] ?? "", avatar: dict[avatarKey] ?? "", date: formattedDateString)
-                    feed.append(tweet)
-                }
+
+                //Get the user's feed
+                feed = getFeedFrom(timeline)
             } else {
                 print("File does not exist!")
             }
@@ -70,8 +44,52 @@ class Tweets {
         }
         //Send a notification saying that the tweets are ready to be loaded
         NotificationCenter.default.post(name: .timelineDataParsed, object: nil, userInfo: nil)
-        
         //Return the array of tweets
         return feed
+    }
+    
+    private static func getFeedFrom(_ timeline: [Any]) -> [Tweet] {
+        var feed = [Tweet]()
+        //Create a tweet from each array in the dictionary
+        for i in 0..<timeline.count {
+            let dict: Dictionary = timeline[i] as! [String: String]
+            //Get the data from the dictionary and create a tweet
+            let tweet = Tweet(id: dict[idKey] ?? "", author: dict[authorKey] ?? "", content: dict[contentKey] ?? "", avatar: dict[avatarKey] ?? "", date: createTwitterLikeDate(dict[dateKey] ?? ""))
+            feed.append(tweet)
+        }
+        return feed
+    }
+
+    //TODO: Create some unit tests here
+    
+    //In order to better match the twitter look this code is going to return how many years, days or hours the tweet was posted
+    private static func createTwitterLikeDate(_ tweetDate: String) -> String {
+        //The date that is in the json is an ISO date
+        let isoDateFormatter = DateFormatter()
+        //Set the locale to the user's locale
+        isoDateFormatter.locale = Locale.current
+        //Set the formatter to the ISO format
+        isoDateFormatter.dateFormat = isoDateFormatString
+        var formattedDateString: String = ""
+        
+        //Create the date if it's valid
+        if let date = isoDateFormatter.date(from: tweetDate) {
+            let diffComponents = Calendar.current.dateComponents([.year,.month,.day,.hour], from: date, to: Date())
+            //Get the years, months, days and hours passed since the tweet was posted
+            if let years = diffComponents.year, let months = diffComponents.month, let days = diffComponents.day, let hours = diffComponents.hour {
+                
+                //If the year is greater than 0 use years to report tweet date, etc, default to hours if the tweet is less than a day old
+                if (years > 0) {
+                    formattedDateString = String(format: "%iy", years)
+                } else if (months > 0) {
+                    formattedDateString = String(format: "%im", months)
+                } else if (days > 0){
+                    formattedDateString = String(format: "%id", days)
+                } else {
+                    formattedDateString = String(format: "%ih", hours)
+                }
+            }
+        }
+        return formattedDateString
     }
 }

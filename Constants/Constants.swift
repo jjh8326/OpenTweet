@@ -14,3 +14,5 @@ let authorKey = "author"
 let contentKey = "content"
 let avatarKey = "avatar"
 let dateKey = "date"
+
+let isoDateFormatString = "yyyy-MM-dd'T'HH:mm:ssZ"
