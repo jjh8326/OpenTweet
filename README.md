@@ -2,13 +2,10 @@ OpenTweet
 =========
 
 Known issues:
-- Update target back to 14.1
-- Remove hard coded image (used for mock)
 - There is a warning in Main.storyboard, if you reset the frames on the TimeLineViewController the warnings go away but some of the content goes off screen. Doing this will not break the autolayout but I am leaving it as is for visiblity, for now.
-- Need to fix spacing in tweets
+- There are no unit tests, this needs to change, this code needs unit tests for the date code and other parts
 
-- CREATE A SUB VIEW AND THROW CONTENT INTO VIEW, MAKE A MIN HEIGHT FOR SUBVIEW
-
+Original Content Below:
 
 Hi! Welcome to your iOS coding excercise.
 
