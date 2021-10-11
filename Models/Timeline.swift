@@ -16,24 +16,19 @@ struct Tweet {
     let date: String
 }
 
-//NOTE: Normally I do not commit this but I wanted to give you a little insight into how my brain works when coding. Often when I code I make notes on how I would solve a problem, below are my (cleaned up) notes on how I would create a data structure that would hold a root tweet and its replies
+//NOTE: Normally I do not commit this but I wanted to give you a little insight into how my brain works when coding. Often when I code I make notes on how I would solve a problem, below are my (cleaned up) notes on how I would load a tweet's replies
 
-//TODO: Algorithm to optimally sort and store tweet threads
-
-//Tweet threads should be arrays with a root node
-//[ROOT TWEET, REPLY, NEXT REPLY]
+//TODO: Algorithm to optimally sort and store tweet replies, the VC will pass on the root tweet, we just need to get the replies
 
 //To accomplish this:
-//Create a dictionary - [ ROOT TWEET: [REPLIES] ]
+//Create a dictionary - [ ROOT ID: [REPLIES] ]
 //Sort the replies
-//Create new array - [ROOT TWEET, REPLY, NEXT REPLY]
 
 //Steps
-//1. Loop through the timeline and add all root tweets as a key to a dictionary and create the above data structure
+//1. Loop through the timeline and add all root tweets IDs as a key to a dictionary and create the above data structure
 //2. Loop through the timeline again and this time add all non root nodes (nodes with the "inReplyTo" field) to the value of the dictionary which is a array of tweets
 //NOTE: It would be nice to not have to loop through the timeline twice but we have to because a root node is not guaranteed to be before a reply node
 //3. Sort the reply array in each dictionary (created in step 1), sort the tweets by the time interval between the root and reply
-//4. Add the root to the beginning of the reply array and use that
 //5. You now have a sorted tweet reply structure :D
 
 class Tweets {
@@ -76,11 +71,12 @@ class Tweets {
             //Assuming it's standard for all the user names to start with @, lets remove the @ symbol
             var username = ""
             if let authorValue = dict[authorKey] {
+                //TODO: Fix warning here
                 username = authorValue.substring(from: authorValue.index(authorValue.startIndex, offsetBy: 1))
             }
             
             //Get the data from the dictionary and create a tweet
-            let tweet = Tweet(id: dict[idKey] ?? "", author: username ?? "", content: dict[contentKey] ?? "", avatarURL: dict[avatarKey] ?? "", date: createTwitterLikeDate(dict[dateKey] ?? ""))
+            let tweet = Tweet(id: dict[idKey] ?? "", author: username, content: dict[contentKey] ?? "", avatarURL: dict[avatarKey] ?? "", date: createTwitterLikeDate(dict[dateKey] ?? ""))
             feed.append(tweet)
         }
         return feed

@@ -3,7 +3,8 @@ OpenTweet
 
 Known issues:
 - There is a warning in Main.storyboard, if you reset the frames on the TimeLineViewController the warnings go away but some of the content goes off screen. Doing this will not break the autolayout but I am leaving it as is for visiblity, for now.
-- There are no unit tests, this needs to change, this code needs unit tests for the date code and other parts
+- There are no unit tests, this needs to change, this code needs unit tests for the date code and other parts, this project should achieve maximum code coverage
+- Need to fix all warnings (except the one noted above)
 
 Original Content Below:
 
