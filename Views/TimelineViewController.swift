@@ -9,11 +9,20 @@
 import UIKit
 
 var avatarCache: NSCache = NSCache<NSString, UIImage>()
+var replyCache = [NSString: [Tweet]]()
 
 class TimelineViewController: UIViewController {
 
     var tweets = [Tweet]()
+    //Data structure to hold our tweet replies, ordered by date
+    var tweetReplies = [String: [Tweet]]()
+    
     @IBOutlet weak var timelineTableView: UITableView!
+    
+    //If our reply cache gets too big then clear it
+    override func didReceiveMemoryWarning() {
+        replyCache = [NSString: [Tweet]]()
+    }
     
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -38,6 +47,16 @@ class TimelineViewController: UIViewController {
         }
         
         //TODO: Create our tweet replies data structure
+        DispatchQueue.global(qos: .background).async {
+            //self.tweetReplies = Tweets.feedFromBundle()
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+      if let destination = segue.destination as? RepliesViewController,
+        let indexPath = timelineTableView.indexPathForSelectedRow {
+        destination.selectedTweet = tweets[indexPath.row]
+      }
     }
 }
 
@@ -49,11 +68,14 @@ extension TimelineViewController: UITableViewDataSource {
         
         let tweet = tweets[indexPath.row]
         
-        cell.authorDateLabel.text = tweet.author + " - " + tweet.date
+        cell.authorDateLabel.text = tweet.author + " - " + tweet.viewDate
         cell.contentLabel.text = tweet.content
         
         //Make our avatar's image circular
         cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.size.width / 2
+        
+        let test = Tweets.getTweetRepliesFor(rootTweetID: tweets[indexPath.row].id, timeline: tweets)
+        print(test)
         
         if (tweet.avatarURL != "") {
             //Get the avatar's image URL from the tweet

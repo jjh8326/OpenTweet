@@ -13,23 +13,12 @@ struct Tweet {
     let author: String
     let content: String
     let avatarURL: String
+    //Store JSON's date for future sorting
     let date: String
+    //Store the formatted date for view presentation
+    let viewDate: String
+    let reply: String
 }
-
-//NOTE: Normally I do not commit this but I wanted to give you a little insight into how my brain works when coding. Often when I code I make notes on how I would solve a problem, below are my (cleaned up) notes on how I would load a tweet's replies
-
-//TODO: Algorithm to optimally sort and store tweet replies, the VC will pass on the root tweet, we just need to get the replies
-
-//To accomplish this:
-//Create a dictionary - [ ROOT ID: [REPLIES] ]
-//Sort the replies
-
-//Steps
-//1. Loop through the timeline and add all root tweets IDs as a key to a dictionary and create the above data structure
-//2. Loop through the timeline again and this time add all non root nodes (nodes with the "inReplyTo" field) to the value of the dictionary which is a array of tweets
-//NOTE: It would be nice to not have to loop through the timeline twice but we have to because a root node is not guaranteed to be before a reply node
-//3. Sort the reply array in each dictionary (created in step 1), sort the tweets by the time interval between the root and reply
-//5. You now have a sorted tweet reply structure :D
 
 class Tweets {
     //Get data from JSON
@@ -63,12 +52,45 @@ class Tweets {
         return feed
     }
     
+    //Get the tweet's replies
+    static func getTweetRepliesFor(rootTweetID: String, timeline: [Tweet]) -> [Tweet] {
+        //Store our replies in a dictionary with a key of the date
+        //NOTE: Assume all our dates are unique, if this were a prod environment we could store micro seconds
+        var tweetReplies = [String: Tweet]()
+        var tweetReplyDates = [String]()
+        var sortedTweetReplies = [Tweet]()
+        
+        //Loop through the timeline and add all non root nodes that have a reply value set to the rootTweetID
+        for i in 0..<timeline.count {
+            let tweet = timeline[i]
+            if (tweet.reply == rootTweetID) {
+                //If the reply ID is the root ID then add it to the replies
+                tweetReplies[tweet.date] = tweet
+                tweetReplyDates.append(tweet.date)
+            }
+        }
+        
+        //Sort our dates
+        tweetReplyDates.sort()
+        
+        //Go through our sorted reply dates and add the tweets to the sorted tweets array in order
+        for i in 0..<tweetReplyDates.count {
+            if let reply = tweetReplies[tweetReplyDates[i]] {
+                sortedTweetReplies.append(reply)
+            }
+        }
+        
+        //TODO: MAKE SURE THIS WORKS, new tweets should be first in replies
+        
+        return sortedTweetReplies
+    }
+    
     private static func getFeedFrom(_ timeline: [Any]) -> [Tweet] {
         var feed = [Tweet]()
         //Create a tweet from each array in the dictionary
         for i in 0..<timeline.count {
             let dict: Dictionary = timeline[i] as! [String: String]
-            //Assuming it's standard for all the user names to start with @, lets remove the @ symbol
+            //Assuming it's standard for all the user names to start with @, remove the @ symbol to better match actual twitter
             var username = ""
             if let authorValue = dict[authorKey] {
                 //TODO: Fix warning here
@@ -76,7 +98,7 @@ class Tweets {
             }
             
             //Get the data from the dictionary and create a tweet
-            let tweet = Tweet(id: dict[idKey] ?? "", author: username, content: dict[contentKey] ?? "", avatarURL: dict[avatarKey] ?? "", date: createTwitterLikeDate(dict[dateKey] ?? ""))
+            let tweet = Tweet(id: dict[idKey] ?? "", author: username, content: dict[contentKey] ?? "", avatarURL: dict[avatarKey] ?? "", date: dict[dateKey] ?? "", viewDate: createViewDate(dict[dateKey] ?? ""), reply: dict[inReplyToKey] ?? "")
             feed.append(tweet)
         }
         return feed
@@ -85,7 +107,7 @@ class Tweets {
     //TODO: Create some unit tests here
     
     //In order to better match the twitter look this code is going to return how many years, days or hours the tweet was posted
-    private static func createTwitterLikeDate(_ tweetDate: String) -> String {
+    private static func createViewDate(_ tweetDate: String) -> String {
         //The date that is in the json is an ISO date
         let isoDateFormatter = DateFormatter()
         //Set the locale to the user's locale
