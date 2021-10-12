@@ -115,7 +115,7 @@ class Timeline {
 
     //TODO: Create some unit tests here
     
-    //In order to better match the twitter look this code is going to return how many years, days or hours the tweet was posted
+    //In order to better match the twitter look, this code is going to return how many years, days or hours the tweet was posted
     private static func createViewDate(_ tweetDate: String) -> String {
         //The date that is in the json is an ISO date
         let isoDateFormatter = DateFormatter()

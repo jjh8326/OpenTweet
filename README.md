@@ -7,10 +7,11 @@ Known issues:
 - Need to fix all warnings (except the one noted above)
 
 Notes:
-- I do not squash commits, I can if required to, its just not something that I typically do.
-- I also do not use third party libraries, I like to do the work myself so that it is done right.
+- I do not squash commits, I can if required to, it's just not something that I typically do.
+- I also do not use third party libraries, I like to do the work myself so that it is done right and not be reliant on third party code.
 - Most of the base assignment was completed with commit 4dedc073ccd170bd852ed4b33db10d566ec8d2e4, after that you can check PRs to see how I implemented various bonus features.
 - This app was tested thoroughly by hand, I plan to implement unit tests but these take time and I really wanted to work on the bonus features first, I consider unit tests (for a take home) to be a bonus as well.
+- On the note of testing, I have carefully tested this app with the simulator. My personal iPhone is an iPhone 8 and I do not want to upgrade the operating system because that will make it slower, if this was required for work I could be swayed.
 
 Original Content Below:
 
