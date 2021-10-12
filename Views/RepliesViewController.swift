@@ -21,6 +21,7 @@ class RepliesViewController: UIViewController {
         DispatchQueue.global(qos: .background).async {
             //TODO: If a tweet is a reply to a tweet then show that as the first tweet
             //TODO: Consider order of replies
+            //TODO: If a user taps on a tweet with no reply then display that the tweet has no replies
             self.tweetThread = Timeline.getTweetRepliesFor(rootTweetID: self.selectedTweet.id, timeline: tweets)
         }
         
@@ -55,7 +56,12 @@ extension RepliesViewController: UITableViewDataSource {
         
         let tweet = tweetThread[indexPath.row]
         
-        cell.authorDateLabel.text = tweet.author + " - " + tweet.viewDate
+        if (tweet.author != "") {
+            cell.authorDateLabel.text = tweet.author + " - " + tweet.viewDate
+        } else {
+            cell.authorDateLabel.text = ""
+        }
+        
         cell.contentLabel.text = tweet.content
         
         //Make our avatar's image circular
@@ -78,10 +84,12 @@ extension RepliesViewController: UITableViewDataSource {
                         print(error!)
                         return
                     }
-                    if let image = UIImage(data: data!) {
-                        avatarCache.setObject(image, forKey: tweet.avatarURL as NSString)
-                        DispatchQueue.main.async {
-                            cell.avatarImageView.image = image
+                    if (tweet.author != "") {
+                        if let image = UIImage(data: data!) {
+                            avatarCache.setObject(image, forKey: tweet.avatarURL as NSString)
+                            DispatchQueue.main.async {
+                                cell.avatarImageView.image = image
+                            }
                         }
                     }
                 }.resume()

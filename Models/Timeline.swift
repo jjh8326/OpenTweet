@@ -84,6 +84,12 @@ class Timeline {
         
         NotificationCenter.default.post(name: .tweetThreadCreated, object: nil, userInfo: nil)
         
+        //If there are no tweets then display a "fake" tweet saying there is no content
+        //TODO: Consider displaying just the original tweet
+        if sortedTweetReplies.count == 0 {
+            sortedTweetReplies.append(Tweet(id: "", author: "", content: "There are no replies.", avatarURL: "", date: "", viewDate: "", reply: ""))
+        }
+        
         return sortedTweetReplies
     }
     
