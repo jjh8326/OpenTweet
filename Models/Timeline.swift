@@ -8,6 +8,7 @@
 
 import Foundation
 
+//TODO: Make this a class
 struct Tweet {
     let id: String
     let author: String
