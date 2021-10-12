@@ -13,10 +13,14 @@ struct Tweet {
     let author: String
     let content: String
     let avatarURL: String
+    //Store JSON's date for future sorting
     let date: String
+    //Store the formatted date for view presentation
+    let viewDate: String
+    let reply: String
 }
 
-class Tweets {
+class Timeline {
     //Get data from JSON
     static func feedFromBundle() -> [Tweet] {
         var feed = [Tweet]()
@@ -48,19 +52,62 @@ class Tweets {
         return feed
     }
     
+    //Get the tweet's replies
+    static func getTweetRepliesFor(rootTweetID: String, timeline: [Tweet]) -> [Tweet] {
+        //Store our replies in a dictionary with a key of the date
+        //NOTE: Assume all our dates are unique, if this were a prod environment we could store micro seconds in the json or use some other identifer to sort the tweets
+        var tweetReplies = [String: Tweet]()
+        var tweetReplyDates = [String]()
+        var sortedTweetReplies = [Tweet]()
+        
+        //Loop through the timeline and add all non root nodes that have a reply value set to the rootTweetID
+        for i in 0..<timeline.count {
+            let tweet = timeline[i]
+            if (tweet.reply == rootTweetID) {
+                //If the reply ID is the root ID then add it to the replies
+                tweetReplies[tweet.date] = tweet
+                tweetReplyDates.append(tweet.date)
+            }
+        }
+        
+        //Sort our dates
+        tweetReplyDates.sort()
+        
+        //Go through our sorted reply dates and add the tweets to the sorted tweets array
+        for i in 0..<tweetReplyDates.count {
+            //Add the tweets in reversed order so the newest replies appear first
+            if let reply = tweetReplies[tweetReplyDates[tweetReplyDates.count - 1 - i]] {
+                sortedTweetReplies.append(reply)
+            }
+        }
+        
+        NotificationCenter.default.post(name: .tweetThreadCreated, object: nil, userInfo: nil)
+        
+        //If there are no tweets and the tweet is not a reply then the cell will say there is no reply
+        if sortedTweetReplies.count == 0 {
+            sortedTweetReplies.append(Tweet(id: "", author: "", content: "There are no replies.", avatarURL: "", date: "", viewDate: "", reply: ""))
+        }
+        
+        return sortedTweetReplies
+    }
+    
+    //Private methods
+    
+    //TODO: Better method name here
     private static func getFeedFrom(_ timeline: [Any]) -> [Tweet] {
         var feed = [Tweet]()
         //Create a tweet from each array in the dictionary
         for i in 0..<timeline.count {
             let dict: Dictionary = timeline[i] as! [String: String]
-            //Assuming it's standard for all the user names to start with @, lets remove the @ symbol
+            //Assuming it's standard for all the user names to start with @, remove the @ symbol to better match actual twitter
             var username = ""
             if let authorValue = dict[authorKey] {
+                //TODO: Fix warning here
                 username = authorValue.substring(from: authorValue.index(authorValue.startIndex, offsetBy: 1))
             }
             
             //Get the data from the dictionary and create a tweet
-            let tweet = Tweet(id: dict[idKey] ?? "", author: username ?? "", content: dict[contentKey] ?? "", avatarURL: dict[avatarKey] ?? "", date: createTwitterLikeDate(dict[dateKey] ?? ""))
+            let tweet = Tweet(id: dict[idKey] ?? "", author: username, content: dict[contentKey] ?? "", avatarURL: dict[avatarKey] ?? "", date: dict[dateKey] ?? "", viewDate: createViewDate(dict[dateKey] ?? ""), reply: dict[inReplyToKey] ?? "")
             feed.append(tweet)
         }
         return feed
@@ -68,8 +115,8 @@ class Tweets {
 
     //TODO: Create some unit tests here
     
-    //In order to better match the twitter look this code is going to return how many years, days or hours the tweet was posted
-    private static func createTwitterLikeDate(_ tweetDate: String) -> String {
+    //In order to better match the twitter look, this code is going to return how many years, days or hours the tweet was posted
+    private static func createViewDate(_ tweetDate: String) -> String {
         //The date that is in the json is an ISO date
         let isoDateFormatter = DateFormatter()
         //Set the locale to the user's locale

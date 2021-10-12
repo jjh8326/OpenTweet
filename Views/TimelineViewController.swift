@@ -9,17 +9,19 @@
 import UIKit
 
 var avatarCache: NSCache = NSCache<NSString, UIImage>()
+var tweets = [Tweet]()
 
 class TimelineViewController: UIViewController {
-
-    var tweets = [Tweet]()
+    //Data structure to hold our tweet replies, ordered by date
+    var tweetReplies = [String: [Tweet]]()
+    
     @IBOutlet weak var timelineTableView: UITableView!
     
 	override func viewDidLoad() {
 		super.viewDidLoad()
         
         DispatchQueue.global(qos: .background).async {
-            self.tweets = Tweets.feedFromBundle()
+            tweets = Timeline.feedFromBundle()
         }
 
         timelineTableView.dataSource = self
@@ -37,6 +39,13 @@ class TimelineViewController: UIViewController {
             self.timelineTableView.reloadData()
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+      if let destination = segue.destination as? RepliesViewController,
+        let indexPath = timelineTableView.indexPathForSelectedRow {
+        destination.selectedTweet = tweets[indexPath.row]
+      }
+    }
 }
 
 extension TimelineViewController: UITableViewDataSource {
@@ -47,7 +56,7 @@ extension TimelineViewController: UITableViewDataSource {
         
         let tweet = tweets[indexPath.row]
         
-        cell.authorDateLabel.text = tweet.author + " - " + tweet.date
+        cell.authorDateLabel.text = tweet.author + " - " + tweet.viewDate
         cell.contentLabel.text = tweet.content
         
         //Make our avatar's image circular
