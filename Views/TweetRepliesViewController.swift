@@ -92,30 +92,28 @@ extension TweetRepliesViewController: UITableViewDataSource {
         //Make our avatar's image circular
         cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.size.width / 2
         
-        //TODO: Create extension for UIImage here, also duplicate code
+        
+        //TODO: Delete below test code
+        if (tweet.avatarURL == "") {
+            print("HERE - index = %i", indexPath.row)
+        }
+        
         if (tweet.avatarURL != "") {
-            //Get the avatar's image URL from the tweet
-            guard let url = URL(string: tweet.avatarURL) else {
-                print("Invalid URL used")
-                return cell
-            }
             //If the image exists in the cache then set the avatar's image
             if let image = avatarCache.object(forKey: tweet.avatarURL as NSString) {
                 cell.avatarImageView.image = image
             } else {
                 //If it does not exist then download it
-                URLSession.shared.dataTask(with: url) { data, response, error in
-                    if error != nil {
-                        print(error!)
-                        return
-                    }
-                    if let image = UIImage(data: data!) {
+                DispatchQueue.global(qos: .background).async {
+                    let avatarObject = AvatarFetcher.getImageWith(avatarURL: tweet.avatarURL)
+                    if avatarObject.count != 0 {
+                        let image = avatarObject[0]
                         avatarCache.setObject(image, forKey: tweet.avatarURL as NSString)
                         DispatchQueue.main.async {
                             cell.avatarImageView.image = image
                         }
                     }
-                }.resume()
+                }
             }
         }
         
