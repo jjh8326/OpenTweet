@@ -18,11 +18,39 @@ class RepliesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        DispatchQueue.global(qos: .background).async {
-            //TODO: If a tweet is a reply to a tweet then show that as the first tweet
-            //TODO: Consider order of replies
-            //TODO: If a user taps on a tweet with no reply then display that the tweet has no replies
-            self.tweetThread = Timeline.getTweetRepliesFor(rootTweetID: self.selectedTweet.id, timeline: tweets)
+        //DONE?: Display a tweet's thread when tapping on a giving tweet. Due to the very simplistic data model made available to you, it's probably best to simplify this: if the user taps on the first tweet of a thread, display all the replies in ascending chronological order,
+        
+        if self.selectedTweet.reply == "" {
+            DispatchQueue.global(qos: .background).async {
+                //TODO: Consider order of replies
+                
+                //If the tweet is a root tweet the get all the replies
+                self.tweetThread = Timeline.getTweetRepliesFor(rootTweetID: self.selectedTweet.id, timeline: tweets)
+            }
+        } else {
+            //First tweet in the thread should be the selected tweet
+            DispatchQueue.global(qos: .background).async { [self] in
+                for i in 0..<tweets.count {
+                    //If the tweet is the tweet the selected tweet is replying to then add it to our tweet thread
+                    if tweets[i].id == self.selectedTweet.reply {
+                        self.tweetThread.append(tweets[i])
+                    }
+                }
+                
+                //TODO: Consider making Tweet a class so the content can change
+                let rootTweet = tweetThread[0]
+                
+                //Format the content so a user knows its a response to tweet below it
+                let updatedSelectedContent = String(format: "In response to %@: %@", rootTweet.author, self.selectedTweet.content)
+                let updatedRootContent = String(format: "Original message: %@", rootTweet.content)
+                
+                //TODO: Consider making Tweet a class so the content can change
+                let updatedRootTweet = Tweet(id: rootTweet.id, author: rootTweet.author, content: updatedRootContent, avatarURL: rootTweet.avatarURL, date: rootTweet.date, viewDate: rootTweet.viewDate, reply: rootTweet.reply)
+                
+                tweetThread = [self.selectedTweet, updatedRootTweet]
+            }
+            
+            //TODO: Display a loading indicator
         }
         
         tweetThreadTableView.dataSource = self
@@ -56,12 +84,7 @@ extension RepliesViewController: UITableViewDataSource {
         
         let tweet = tweetThread[indexPath.row]
         
-        if (tweet.author != "") {
-            cell.authorDateLabel.text = tweet.author + " - " + tweet.viewDate
-        } else {
-            cell.authorDateLabel.text = ""
-        }
-        
+        cell.authorDateLabel.text = tweet.author + " - " + tweet.viewDate
         cell.contentLabel.text = tweet.content
         
         //Make our avatar's image circular
@@ -84,16 +107,20 @@ extension RepliesViewController: UITableViewDataSource {
                         print(error!)
                         return
                     }
-                    if (tweet.author != "") {
-                        if let image = UIImage(data: data!) {
-                            avatarCache.setObject(image, forKey: tweet.avatarURL as NSString)
-                            DispatchQueue.main.async {
-                                cell.avatarImageView.image = image
-                            }
+                    if let image = UIImage(data: data!) {
+                        avatarCache.setObject(image, forKey: tweet.avatarURL as NSString)
+                        DispatchQueue.main.async {
+                            cell.avatarImageView.image = image
                         }
                     }
                 }.resume()
             }
+        }
+        
+        //Load the no replies view
+        if (tweet.id == "") {
+            cell.authorDateLabel.text = ""
+            cell.avatarImageView.isHidden = true
         }
         
         return cell

@@ -55,7 +55,7 @@ class Timeline {
     //Get the tweet's replies
     static func getTweetRepliesFor(rootTweetID: String, timeline: [Tweet]) -> [Tweet] {
         //Store our replies in a dictionary with a key of the date
-        //NOTE: Assume all our dates are unique, if this were a prod environment we could store micro seconds
+        //NOTE: Assume all our dates are unique, if this were a prod environment we could store micro seconds in the json or use some other identifer to sort the tweets
         var tweetReplies = [String: Tweet]()
         var tweetReplyDates = [String]()
         var sortedTweetReplies = [Tweet]()
@@ -73,19 +73,17 @@ class Timeline {
         //Sort our dates
         tweetReplyDates.sort()
         
-        //Go through our sorted reply dates and add the tweets to the sorted tweets array in order
+        //Go through our sorted reply dates and add the tweets to the sorted tweets array
         for i in 0..<tweetReplyDates.count {
-            if let reply = tweetReplies[tweetReplyDates[i]] {
+            //Add the tweets in reversed order so the newest replies appear first
+            if let reply = tweetReplies[tweetReplyDates[tweetReplyDates.count - 1 - i]] {
                 sortedTweetReplies.append(reply)
             }
         }
         
-        //TODO: MAKE SURE THIS WORKS, new tweets should be first in replies
-        
         NotificationCenter.default.post(name: .tweetThreadCreated, object: nil, userInfo: nil)
         
-        //If there are no tweets then display a "fake" tweet saying there is no content
-        //TODO: Consider displaying just the original tweet
+        //If there are no tweets and the tweet is not a reply then the cell will say there is no reply
         if sortedTweetReplies.count == 0 {
             sortedTweetReplies.append(Tweet(id: "", author: "", content: "There are no replies.", avatarURL: "", date: "", viewDate: "", reply: ""))
         }
