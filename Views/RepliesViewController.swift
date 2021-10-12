@@ -19,7 +19,6 @@ class RepliesViewController: UIViewController {
         super.viewDidLoad()
         
         //DONE?: Display a tweet's thread when tapping on a giving tweet. Due to the very simplistic data model made available to you, it's probably best to simplify this: if the user taps on the first tweet of a thread, display all the replies in ascending chronological order,
-        
         if self.selectedTweet.reply == "" {
             DispatchQueue.global(qos: .background).async {
                 //TODO: Consider order of replies
@@ -41,7 +40,6 @@ class RepliesViewController: UIViewController {
                 let rootTweet = tweetThread[0]
                 
                 //Format the content so a user knows its a response to tweet below it
-                let updatedSelectedContent = String(format: "In response to %@: %@", rootTweet.author, self.selectedTweet.content)
                 let updatedRootContent = String(format: "Original message: %@", rootTweet.content)
                 
                 //TODO: Consider making Tweet a class so the content can change

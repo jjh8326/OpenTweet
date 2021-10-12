@@ -102,8 +102,9 @@ class Timeline {
             //Assuming it's standard for all the user names to start with @, remove the @ symbol to better match actual twitter
             var username = ""
             if let authorValue = dict[authorKey] {
-                //TODO: Fix warning here
-                username = authorValue.substring(from: authorValue.index(authorValue.startIndex, offsetBy: 1))
+                username = authorValue
+                //Remove the @ symbol in the author of the tweet
+                username.removeFirst()
             }
             
             //Get the data from the dictionary and create a tweet
