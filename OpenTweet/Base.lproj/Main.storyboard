@@ -24,19 +24,19 @@
             </objects>
             <point key="canvasLocation" x="-562" y="110"/>
         </scene>
-        <!--Tweets-->
+        <!--TweetTimeline-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="Tweets" id="BYZ-38-t0r" customClass="TimelineViewController" customModule="OpenTweet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Tweets" id="BYZ-38-t0r" userLabel="TweetTimeline" customClass="TweetTimelineViewController" customModule="OpenTweet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" userLabel="TweetTimeline View">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NfK-d4-eCC">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NfK-d4-eCC" userLabel="TweetTimeline Table View">
                                 <rect key="frame" x="0.0" y="88" width="428" height="804"/>
                                 <color key="backgroundColor" red="0.093526117503643036" green="0.2252647876739502" blue="0.60494118928909302" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="separatorColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -117,26 +117,26 @@
                     </view>
                     <navigationItem key="navigationItem" title="Tweets" id="9kU-0u-cZZ"/>
                     <connections>
-                        <outlet property="timelineTableView" destination="NfK-d4-eCC" id="vBe-s9-3gN"/>
+                        <outlet property="tweetTimelineTableView" destination="NfK-d4-eCC" id="6jB-c4-DuS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="130.40000000000001" y="110.19490254872565"/>
         </scene>
-        <!--Replies-->
+        <!--TweetReplies-->
         <scene sceneID="5PT-Qb-vAz">
             <objects>
-                <viewController title="Tweets" id="Boo-MM-wcG" userLabel="Replies" customClass="RepliesViewController" customModule="OpenTweet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Tweets" id="Boo-MM-wcG" userLabel="TweetReplies" customClass="TweetRepliesViewController" customModule="OpenTweet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aTG-rV-VkN"/>
                         <viewControllerLayoutGuide type="bottom" id="3tV-dY-IF0"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="G32-1E-CQS">
+                    <view key="view" contentMode="scaleToFill" id="G32-1E-CQS" userLabel="TweetReplies View" customClass="TweetReplies">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZHo-YV-pLD" userLabel="Replies Table View">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZHo-YV-pLD" userLabel="TweetReplies Table View">
                                 <rect key="frame" x="0.0" y="88" width="428" height="804"/>
                                 <color key="backgroundColor" red="0.093526117500000006" green="0.2252647877" blue="0.60494118929999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="separatorColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -216,7 +216,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Replies" id="N78-T9-ZLo" userLabel="Replies"/>
                     <connections>
-                        <outlet property="tweetThreadTableView" destination="ZHo-YV-pLD" id="cBN-LE-NBg"/>
+                        <outlet property="tweetRepliesTableView" destination="ZHo-YV-pLD" id="DNq-7o-8Gb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i1Z-kY-ZNh" sceneMemberID="firstResponder"/>

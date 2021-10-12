@@ -1,5 +1,5 @@
 //
-//  RepliesViewController.swift
+//  TweetRepliesViewController.swift
 //  OpenTweet
 //
 //  Created by Joe H on 10/11/21.
@@ -8,12 +8,16 @@
 
 import UIKit
 
-class RepliesViewController: UIViewController {
+class TweetRepliesViewController: UIViewController {
     
     var selectedTweet: Tweet!
     var tweetThread = [Tweet]()
     
-    @IBOutlet weak var tweetThreadTableView: UITableView!
+    @IBOutlet weak var tweetRepliesTableView: UITableView!
+    
+    //@IBOutlet weak var tweetThreadTableView: UITableView!
+    
+    //TODO: Make sure assets are used properly
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +28,7 @@ class RepliesViewController: UIViewController {
                 //TODO: Consider order of replies
                 
                 //If the tweet is a root tweet the get all the replies
-                self.tweetThread = Timeline.getTweetRepliesFor(rootTweetID: self.selectedTweet.id, timeline: tweets)
+                self.tweetThread = TweetTimeline.getTweetRepliesFor(rootTweetID: self.selectedTweet.id, timeline: tweets)
             }
         } else {
             //First tweet in the thread should be the selected tweet
@@ -51,9 +55,9 @@ class RepliesViewController: UIViewController {
             //TODO: Display a loading indicator
         }
         
-        tweetThreadTableView.dataSource = self
-        tweetThreadTableView.rowHeight = UITableView.automaticDimension
-        tweetThreadTableView.estimatedRowHeight = 600
+        tweetRepliesTableView.dataSource = self
+        tweetRepliesTableView.rowHeight = UITableView.automaticDimension
+        tweetRepliesTableView.estimatedRowHeight = 600
         
         //Add observers for our notifications
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTweets), name: .tweetThreadCreated, object: nil)
@@ -63,7 +67,7 @@ class RepliesViewController: UIViewController {
     func reloadTweets() {
         //Reload the data
         DispatchQueue.main.async {
-            self.tweetThreadTableView.reloadData()
+            self.tweetRepliesTableView.reloadData()
         }
     }
     
@@ -74,7 +78,7 @@ class RepliesViewController: UIViewController {
 }
 
 //TODO: Duplicate code!
-extension RepliesViewController: UITableViewDataSource {
+extension TweetRepliesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
           withIdentifier: "TweetCell",

@@ -9,6 +9,6 @@
 import Foundation
 
 extension Notification.Name {
-    static let timelineDataParsed = NSNotification.Name(rawValue: "TimelineDataParsed")
+    static let bundleDataParsed = NSNotification.Name(rawValue: "BundleDataParsed")
     static let tweetThreadCreated = NSNotification.Name(rawValue: "TweetThreadCreated")
 }

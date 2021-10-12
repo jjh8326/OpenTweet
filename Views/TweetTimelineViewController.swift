@@ -1,9 +1,9 @@
 //
-//  ViewController.swift
+//  TweetTimelineViewController.swift
 //  OpenTweet
 //
-//  Created by Olivier Larivain on 9/30/16.
-//  Copyright © 2016 OpenTable, Inc. All rights reserved.
+//  Created by Joe H on 10/09/21.
+//  Copyright © 2021 OpenTable, Inc. All rights reserved.
 //
 
 import UIKit
@@ -11,44 +11,44 @@ import UIKit
 var avatarCache: NSCache = NSCache<NSString, UIImage>()
 var tweets = [Tweet]()
 
-class TimelineViewController: UIViewController {
+class TweetTimelineViewController: UIViewController {
     //Data structure to hold our tweet replies, ordered by date
     var tweetReplies = [String: [Tweet]]()
     
-    @IBOutlet weak var timelineTableView: UITableView!
+    @IBOutlet weak var tweetTimelineTableView: UITableView!
     
 	override func viewDidLoad() {
 		super.viewDidLoad()
         
         DispatchQueue.global(qos: .background).async {
-            tweets = Timeline.feedFromBundle()
+            tweets = TweetTimeline.feedFromBundle()
         }
 
-        timelineTableView.dataSource = self
-        timelineTableView.rowHeight = UITableView.automaticDimension
-        timelineTableView.estimatedRowHeight = 600
+        tweetTimelineTableView.dataSource = self
+        tweetTimelineTableView.rowHeight = UITableView.automaticDimension
+        tweetTimelineTableView.estimatedRowHeight = 600
         
         //Add observers for our notifications
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadTweets), name: .timelineDataParsed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTweets), name: .bundleDataParsed, object: nil)
     }
     
     @objc
     func reloadTweets() {
         //Reload the data
         DispatchQueue.main.async {
-            self.timelineTableView.reloadData()
+            self.tweetTimelineTableView.reloadData()
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-      if let destination = segue.destination as? RepliesViewController,
-        let indexPath = timelineTableView.indexPathForSelectedRow {
+      if let destination = segue.destination as? TweetRepliesViewController,
+        let indexPath = tweetTimelineTableView.indexPathForSelectedRow {
         destination.selectedTweet = tweets[indexPath.row]
       }
     }
 }
 
-extension TimelineViewController: UITableViewDataSource {
+extension TweetTimelineViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
           withIdentifier: "TweetCell",

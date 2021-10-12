@@ -1,5 +1,5 @@
 //
-//  Timeline.swift
+//  TweetTimeline.swift
 //  OpenTweet
 //
 //  Created by Joe H on 10/7/21.
@@ -8,33 +8,20 @@
 
 import Foundation
 
-//TODO: Make this a class
-struct Tweet {
-    let id: String
-    let author: String
-    let content: String
-    let avatarURL: String
-    //Store JSON's date for future sorting
-    let date: String
-    //Store the formatted date for view presentation
-    let viewDate: String
-    let reply: String
-}
-
-class Timeline {
+class TweetTimeline {
     //Get data from JSON
     static func feedFromBundle() -> [Tweet] {
         var feed = [Tweet]()
         do {
             //Get the url of the json
-            if let timelineJSONURL = Bundle.main.url(forResource: timelineFileName, withExtension: timelineFileType) {
+            if let timelineJSONURL = Bundle.main.url(forResource: Constants.dataFileName, withExtension: Constants.dataFileType) {
                 //Get data from the json
                 let timelineData = try Data(contentsOf: timelineJSONURL)
                 //Convert the json into a dictionary
                 let feedDictionary: Dictionary = try JSONSerialization.jsonObject(with: timelineData, options:[]) as! [String: Array<Any>]
                 
                 //If the timeline is empty return
-                guard let timeline: Array = feedDictionary[timelineFileName] else {
+                guard let timeline: Array = feedDictionary[Constants.dataFileName] else {
                     print("No data in timeline")
                     return []
                 }
@@ -48,7 +35,7 @@ class Timeline {
           print(error.localizedDescription)
         }
         //Send a notification saying that the tweets are ready to be loaded
-        NotificationCenter.default.post(name: .timelineDataParsed, object: nil, userInfo: nil)
+        NotificationCenter.default.post(name: .bundleDataParsed, object: nil, userInfo: nil)
         //Return the array of tweets
         return feed
     }
@@ -102,14 +89,16 @@ class Timeline {
             let dict: Dictionary = timeline[i] as! [String: String]
             //Assuming it's standard for all the user names to start with @, remove the @ symbol to better match actual twitter
             var username = ""
-            if let authorValue = dict[authorKey] {
+            if let authorValue = dict[Constants.authorKey] {
                 username = authorValue
                 //Remove the @ symbol in the author of the tweet
                 username.removeFirst()
             }
             
             //Get the data from the dictionary and create a tweet
-            let tweet = Tweet(id: dict[idKey] ?? "", author: username, content: dict[contentKey] ?? "", avatarURL: dict[avatarKey] ?? "", date: dict[dateKey] ?? "", viewDate: createViewDate(dict[dateKey] ?? ""), reply: dict[inReplyToKey] ?? "")
+            
+            // TODO: fix spacing so the construction is easier to read (put each param on a different line)
+            let tweet = Tweet(id: dict[Constants.idKey] ?? "", author: username, content: dict[Constants.contentKey] ?? "", avatarURL: dict[Constants.avatarKey] ?? "", date: dict[Constants.dateKey] ?? "", viewDate: createViewDate(dict[Constants.dateKey] ?? ""), reply: dict[Constants.inReplyToKey] ?? "")
             feed.append(tweet)
         }
         return feed
@@ -124,14 +113,17 @@ class Timeline {
         //Set the locale to the user's locale
         isoDateFormatter.locale = Locale.current
         //Set the formatter to the ISO format
-        isoDateFormatter.dateFormat = isoDateFormatString
+        isoDateFormatter.dateFormat = Constants.isoDateFormatString
         var formattedDateString: String = ""
         
         //Create the date if it's valid
         if let date = isoDateFormatter.date(from: tweetDate) {
             let diffComponents = Calendar.current.dateComponents([.year,.month,.day,.hour], from: date, to: Date())
             //Get the years, months, days and hours passed since the tweet was posted
-            if let years = diffComponents.year, let months = diffComponents.month, let days = diffComponents.day, let hours = diffComponents.hour {
+            if let years = diffComponents.year,
+               let months = diffComponents.month,
+               let days = diffComponents.day,
+               let hours = diffComponents.hour {
                 
                 //If the year is greater than 0 use years to report tweet date, etc, default to hours if the tweet is less than a day old
                 if (years > 0) {
