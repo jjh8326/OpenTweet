@@ -9,26 +9,19 @@
 import UIKit
 
 var avatarCache: NSCache = NSCache<NSString, UIImage>()
-var replyCache = [NSString: [Tweet]]()
+var tweets = [Tweet]()
 
 class TimelineViewController: UIViewController {
-
-    var tweets = [Tweet]()
     //Data structure to hold our tweet replies, ordered by date
     var tweetReplies = [String: [Tweet]]()
     
     @IBOutlet weak var timelineTableView: UITableView!
     
-    //If our reply cache gets too big then clear it
-    override func didReceiveMemoryWarning() {
-        replyCache = [NSString: [Tweet]]()
-    }
-    
 	override func viewDidLoad() {
 		super.viewDidLoad()
         
         DispatchQueue.global(qos: .background).async {
-            self.tweets = Tweets.feedFromBundle()
+            tweets = Timeline.feedFromBundle()
         }
 
         timelineTableView.dataSource = self
@@ -44,11 +37,6 @@ class TimelineViewController: UIViewController {
         //Reload the data
         DispatchQueue.main.async {
             self.timelineTableView.reloadData()
-        }
-        
-        //TODO: Create our tweet replies data structure
-        DispatchQueue.global(qos: .background).async {
-            //self.tweetReplies = Tweets.feedFromBundle()
         }
     }
     
@@ -73,9 +61,6 @@ extension TimelineViewController: UITableViewDataSource {
         
         //Make our avatar's image circular
         cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.size.width / 2
-        
-        let test = Tweets.getTweetRepliesFor(rootTweetID: tweets[indexPath.row].id, timeline: tweets)
-        print(test)
         
         if (tweet.avatarURL != "") {
             //Get the avatar's image URL from the tweet

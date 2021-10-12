@@ -20,7 +20,7 @@ struct Tweet {
     let reply: String
 }
 
-class Tweets {
+class Timeline {
     //Get data from JSON
     static func feedFromBundle() -> [Tweet] {
         var feed = [Tweet]()
@@ -82,9 +82,14 @@ class Tweets {
         
         //TODO: MAKE SURE THIS WORKS, new tweets should be first in replies
         
+        NotificationCenter.default.post(name: .tweetThreadCreated, object: nil, userInfo: nil)
+        
         return sortedTweetReplies
     }
     
+    //Private methods
+    
+    //TODO: Better method name here
     private static func getFeedFrom(_ timeline: [Any]) -> [Tweet] {
         var feed = [Tweet]()
         //Create a tweet from each array in the dictionary
