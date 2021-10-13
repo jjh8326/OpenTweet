@@ -73,7 +73,8 @@ extension TweetRepliesViewController: UITableViewDataSource {
         
         //Get the tweet
         var tweet = Tweet()
-        if tweetThread.count > 0 {
+        
+        if tweetThread.indices.contains(indexPath.row) {
             tweet = tweetThread[indexPath.row]
         }
         

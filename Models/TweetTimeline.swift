@@ -53,7 +53,6 @@ class TweetTimeline {
                     tweetThread.append(timeline[i])
                 }
             }
-            //TODO: Consider making Tweet a class so the content can change
             let rootTweet = tweetThread[0]
             
             //Format the content so a user knows its a response to tweet below it

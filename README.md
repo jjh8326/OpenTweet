@@ -6,15 +6,16 @@ Known issues:
     There is a warning in Main.storyboard, if you reset the frames on the TimeLineViewController the warnings go away but some of the content goes off screen. Doing this will not break the autolayout but I am leaving it as is for visiblity.
 - There are no unit tests, this needs to change, this code needs unit tests for the date code and other parts, this project should achieve maximum code coverage
 
-Future updates?:
-- I would love to implement a UILoading indicator for when the json and replies are loading, if time permits I will implement this
+Future updates (if I had infinite time):
+- I would like to implement a UILoading indicator for when the json and replies are loading, if time permits I will implement this
+- I would like to implement UITesting, this would help me get more code coverage. The 50% I have acheived is not ideal but I feel like it tests the majority of the non UI based code.
+
 
 Notes:
 - I do not squash commits, I can if required to, it's just not something that I typically do.
 - I also do not use third party libraries, I like to do the work myself so that it is done right and not be reliant on third party code.
 - Most of the base assignment was completed with commit 4dedc073ccd170bd852ed4b33db10d566ec8d2e4, after that you can check PRs to see how I implemented various bonus features.
-- This app was tested thoroughly by hand, I plan to implement unit tests but these take time and I really wanted to work on the bonus features first, I consider unit tests (for a take home) to be a bonus as well.
-- On the note of testing, I have carefully tested this app with the simulator. I do not have an iPhone for testing :(
+- I have carefully tested this app with the simulator. I do not currently have an iPhone for testing :(
 
 Original Content Below:
 
