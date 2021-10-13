@@ -6,6 +6,9 @@ Known issues:
     There is a warning in Main.storyboard, if you reset the frames on the TimeLineViewController the warnings go away but some of the content goes off screen. Doing this will not break the autolayout but I am leaving it as is for visiblity.
 - There are no unit tests, this needs to change, this code needs unit tests for the date code and other parts, this project should achieve maximum code coverage
 
+Future updates?:
+- I would love to implement a UILoading indicator for when the json and replies are loading, if time permits I will implement this
+
 Notes:
 - I do not squash commits, I can if required to, it's just not something that I typically do.
 - I also do not use third party libraries, I like to do the work myself so that it is done right and not be reliant on third party code.
