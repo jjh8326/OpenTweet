@@ -27,6 +27,8 @@ class TweetCellHelper {
                     //If the image is not in the cache then queue it up for fetching and setting
                     AvatarFetcher.getAvatarWith(avatarURLString: tweet.avatarURL, rowIndex: rowIndex)
                 }
+                //Set the default avatar for now
+                cell.avatarImageView.image = UIImage(named: "defaultAvatar")
             }
         }
         return cell

@@ -5,6 +5,8 @@ Known issues:
 - UDPATE: The below issue has appeared to have gone away. I believe this happened when I upgraded to Big Sur and got on the latest version of XCode. Before that I was on a older version and the warning may have been a bug, leaving this known isuse here just in case.
     There is a warning in Main.storyboard, if you reset the frames on the TimeLineViewController the warnings go away but some of the content goes off screen. Doing this will not break the autolayout but I am leaving it as is for visiblity.
 - There are no unit tests, this needs to change, this code needs unit tests for the date code and other parts, this project should achieve maximum code coverage
+- As the code base grew bigger some bugs were introduced, I will try to address them but in the event that I do not I have tried my best to prevent crashing.
+- Issue where image will fail to load and default will not be used (note, this could be a simulator issue)
 
 Future updates (if I had infinite time):
 - I would like to implement a UILoading indicator for when the json and replies are loading, if time permits I will implement this
