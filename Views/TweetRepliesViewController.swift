@@ -72,17 +72,19 @@ extension TweetRepliesViewController: UITableViewDataSource {
           for: indexPath) as! TweetTableViewCell
         
         //Get the tweet
-        let tweet = tweetThread[indexPath.row]
-        
-        if tweet.id != "" {
-            cell = TweetCellHelper.setupWith(cell: cell, rowIndex: indexPath.row, repliesView: true)
+        var tweet = Tweet()
+        if tweetThread.count > 0 {
+            tweet = tweetThread[indexPath.row]
         }
         
-        //Load the no replies view
+        //Load the no replies cell
         if (tweet.id == "") {
             cell.authorDateLabel.text = ""
             cell.contentLabel.text = tweet.content
             cell.avatarImageView.isHidden = true
+        } else {
+            //Load the tweet cell
+            cell = TweetCellHelper.setupWith(cell: cell, tweet: tweet, rowIndex: indexPath.row, repliesView: true)
         }
         
         return cell

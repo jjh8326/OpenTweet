@@ -10,6 +10,8 @@ import XCTest
 
 class TimelineTests: XCTestCase {
     
+    var tweetTimeline: [Tweet]!
+    
     //When given valid JSON and nodes return the appropriate number of tweets
     //Nodes are tweets in the json
     func testFeedFromBundleWhenNodesReturnProperTweets() {
@@ -26,8 +28,6 @@ class TimelineTests: XCTestCase {
     
     //Root node is a tweet that has replies and is not in reply to anything
     func testTweetThreadWhenUsingRootNodeReturnProperTweets() {
-        let tweetTimeline = TweetTimeline.feedFromBundle()
-        
         //The second tweet is a root node
         let rootNode = tweetTimeline[1]
         
@@ -62,5 +62,9 @@ class TimelineTests: XCTestCase {
         
         //Each thread with a root node as the selected tweet should return the correct number of replies it has, this particular tweet has no replies so the only content that will display is the no replies message, this is contained in an empty tweet
         XCTAssert(sut.count == 1)
+    }
+    
+    override func setUpWithError() throws {
+        tweetTimeline = TweetTimeline.feedFromBundle()
     }
 }

@@ -72,7 +72,7 @@ extension TweetTimelineViewController: UITableViewDataSource {
           for: indexPath) as! TweetTableViewCell
         
         //Get the tweet
-        cell = TweetCellHelper.setupWith(cell: cell, rowIndex: indexPath.row, repliesView: false)
+        cell = TweetCellHelper.setupWith(cell: cell, tweet: tweetTimeline[indexPath.row], rowIndex: indexPath.row, repliesView: false)
         
         return cell
     }

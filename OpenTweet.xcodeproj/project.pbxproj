@@ -12,7 +12,6 @@
 		009C4C711D9F0CD600F0BC6C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 009C4C6F1D9F0CD600F0BC6C /* Main.storyboard */; };
 		009C4C731D9F0CD600F0BC6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 009C4C721D9F0CD600F0BC6C /* Assets.xcassets */; };
 		009C4C761D9F0CD600F0BC6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 009C4C741D9F0CD600F0BC6C /* LaunchScreen.storyboard */; };
-		009C4C811D9F0CD600F0BC6C /* OpenTweetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009C4C801D9F0CD600F0BC6C /* OpenTweetTests.swift */; };
 		009C4C8C1D9F0CD600F0BC6C /* OpenTweetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009C4C8B1D9F0CD600F0BC6C /* OpenTweetUITests.swift */; };
 		009C4C9B1D9F0D4100F0BC6C /* timeline.json in Resources */ = {isa = PBXBuildFile; fileRef = 009C4C9A1D9F0D4100F0BC6C /* timeline.json */; };
 		D86FDAB62715FD93007DEC90 /* TimelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86FDAB52715FD93007DEC90 /* TimelineTests.swift */; };
@@ -66,7 +65,6 @@
 		009C4C751D9F0CD600F0BC6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		009C4C771D9F0CD600F0BC6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		009C4C7C1D9F0CD600F0BC6C /* OpenTweetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenTweetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		009C4C801D9F0CD600F0BC6C /* OpenTweetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenTweetTests.swift; sourceTree = "<group>"; };
 		009C4C821D9F0CD600F0BC6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		009C4C871D9F0CD600F0BC6C /* OpenTweetUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenTweetUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		009C4C8B1D9F0CD600F0BC6C /* OpenTweetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenTweetUITests.swift; sourceTree = "<group>"; };
@@ -155,7 +153,6 @@
 		009C4C7F1D9F0CD600F0BC6C /* OpenTweetTests */ = {
 			isa = PBXGroup;
 			children = (
-				009C4C801D9F0CD600F0BC6C /* OpenTweetTests.swift */,
 				009C4C821D9F0CD600F0BC6C /* Info.plist */,
 				D86FDAB52715FD93007DEC90 /* TimelineTests.swift */,
 				D879737C2717314E00554171 /* TweetTests.swift */,
@@ -390,7 +387,6 @@
 				D879737D2717314E00554171 /* TweetTests.swift in Sources */,
 				D8F739E42716934F001A4B02 /* TweetTableViewCell.swift in Sources */,
 				D86FDAD4271636FF007DEC90 /* AvatarFetcher.swift in Sources */,
-				009C4C811D9F0CD600F0BC6C /* OpenTweetTests.swift in Sources */,
 				D8F739E2271650CF001A4B02 /* TweetCellHelper.swift in Sources */,
 				D86FDABC2716321B007DEC90 /* Tweet.swift in Sources */,
 				D8F739E527169381001A4B02 /* TweetRepliesViewController.swift in Sources */,
