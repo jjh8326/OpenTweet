@@ -23,11 +23,6 @@ class TweetRepliesViewController: UIViewController {
         
         //TODO: Display a loading indicator
         
-        DispatchQueue.global(qos: .background).async {
-            //If the tweet is a root tweet the get all the replies
-            tweetThread = TweetTimeline.getTweetThreadWith(selectedTweet: self.selectedTweet)
-        }
-        
         tweetRepliesTableView.dataSource = self
         tweetRepliesTableView.rowHeight = UITableView.automaticDimension
         tweetRepliesTableView.estimatedRowHeight = 600
@@ -35,6 +30,11 @@ class TweetRepliesViewController: UIViewController {
         //Add observers for notifications
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTweets), name: .tweetThreadCreated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAvatarAt(_:)), name: .cellAvatarCached, object: nil)
+        
+        DispatchQueue.global(qos: .background).async {
+            //If the tweet is a root tweet the get all the replies
+            tweetThread = TweetTimeline.getTweetThreadWith(selectedTweet: self.selectedTweet, timeline: tweetTimeline)
+        }
     }
     
     @objc

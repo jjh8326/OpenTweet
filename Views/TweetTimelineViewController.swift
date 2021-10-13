@@ -9,7 +9,7 @@
 import UIKit
 
 var avatarCache: NSCache = NSCache<NSString, UIImage>()
-var tweets = [Tweet]()
+var tweetTimeline = [Tweet]()
 
 class TweetTimelineViewController: UIViewController {
     //Data structure to hold our tweet replies, ordered by date
@@ -20,10 +20,6 @@ class TweetTimelineViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
         
-        DispatchQueue.global(qos: .background).async {
-            tweets = TweetTimeline.feedFromBundle()
-        }
-
         tweetTimelineTableView.dataSource = self
         tweetTimelineTableView.rowHeight = UITableView.automaticDimension
         tweetTimelineTableView.estimatedRowHeight = 600
@@ -31,6 +27,12 @@ class TweetTimelineViewController: UIViewController {
         //Add observers for notifications
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTweets), name: .bundleDataParsed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAvatarAt(_:)), name: .cellAvatarCached, object: nil)
+        
+        //TODO: 100% need a loading indicator
+        
+        DispatchQueue.global(qos: .background).async {
+            tweetTimeline = TweetTimeline.feedFromBundle()
+        }
     }
     
     @objc
@@ -58,7 +60,7 @@ class TweetTimelineViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       if let destination = segue.destination as? TweetRepliesViewController,
         let indexPath = tweetTimelineTableView.indexPathForSelectedRow {
-        destination.selectedTweet = tweets[indexPath.row]
+        destination.selectedTweet = tweetTimeline[indexPath.row]
       }
     }
 }
@@ -76,6 +78,6 @@ extension TweetTimelineViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tweets.count
+        return tweetTimeline.count
     }
 }

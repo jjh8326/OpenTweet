@@ -19,7 +19,7 @@ class TweetCellHelper {
             tweet = tweetThread[rowIndex]
         } else {
             //Get the tweet from the tweets (main timeline)
-            tweet = tweets[rowIndex]
+            tweet = tweetTimeline[rowIndex]
         }
         
         cell.authorDateLabel.text = tweet.author + " - " + tweet.viewDate

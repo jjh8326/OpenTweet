@@ -40,17 +40,17 @@ class TweetTimeline {
         return feed
     }
     
-    static func getTweetThreadWith(selectedTweet: Tweet) -> [Tweet] {
+    static func getTweetThreadWith(selectedTweet: Tweet, timeline: [Tweet]) -> [Tweet] {
         var tweetThread = [Tweet]()
         if selectedTweet.reply == "" {
             //If the tweet is a root tweet the get all the replies
-            tweetThread = TweetTimeline.getTweetRepliesFor(rootTweetID: selectedTweet.id, timeline: tweets)
+            tweetThread = TweetTimeline.getTweetRepliesFor(rootTweetID: selectedTweet.id, timeline: timeline)
         } else {
             //First tweet in the thread should be the selected tweet
-            for i in 0..<tweets.count {
+            for i in 0..<tweetTimeline.count {
                 //If the tweet is the tweet the selected tweet is replying to then add it to our tweet thread
-                if tweets[i].id == selectedTweet.reply {
-                        tweetThread.append(tweets[i])
+                if timeline[i].id == selectedTweet.reply {
+                        tweetThread.append(timeline[i])
                 }
             }
             //TODO: Consider making Tweet a class so the content can change
