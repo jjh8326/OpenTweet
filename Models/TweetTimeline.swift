@@ -58,12 +58,19 @@ class TweetTimeline {
             
             //Format the content so a user knows its a response to tweet below it
             let updatedRootContent = String(format: "Original message: %@", rootTweet.content)
-                
-            //TODO: Consider making Tweet a class so the content can change
-            let updatedRootTweet = Tweet(id: rootTweet.id, author: rootTweet.author, content: updatedRootContent, avatarURL: rootTweet.avatarURL, date: rootTweet.date, viewDate: rootTweet.viewDate, reply: rootTweet.reply)
+            let updatedRootTweet = Tweet(id: rootTweet.id,
+                                         author: rootTweet.author,
+                                         content: updatedRootContent,
+                                         avatarURL: rootTweet.avatarURL,
+                                         date: rootTweet.date,
+                                         viewDate: rootTweet.viewDate,
+                                         reply: rootTweet.reply)
                 
             tweetThread = [selectedTweet, updatedRootTweet]
         }
+        
+        NotificationCenter.default.post(name: .tweetThreadCreated, object: nil, userInfo: nil)
+        
         return tweetThread
     }
     
@@ -98,11 +105,15 @@ class TweetTimeline {
             }
         }
         
-        NotificationCenter.default.post(name: .tweetThreadCreated, object: nil, userInfo: nil)
-        
         //If there are no tweets and the tweet is not a reply then the cell will say there is no reply
         if sortedTweetReplies.count == 0 {
-            sortedTweetReplies.append(Tweet(id: "", author: "", content: Constants.noRepliesMessage, avatarURL: "", date: "", viewDate: "", reply: ""))
+            sortedTweetReplies.append(Tweet(id: "",
+                                            author: "",
+                                            content: Constants.noRepliesMessage,
+                                            avatarURL: "",
+                                            date: "",
+                                            viewDate: "",
+                                            reply: ""))
         }
         
         return sortedTweetReplies
@@ -125,7 +136,14 @@ class TweetTimeline {
             //Get the data from the dictionary and create a tweet
             
             // TODO: fix spacing so the construction is easier to read (put each param on a different line)
-            let tweet = Tweet(id: dict[Constants.idKey] ?? "", author: username, content: dict[Constants.contentKey] ?? "", avatarURL: dict[Constants.avatarKey] ?? "", date: dict[Constants.dateKey] ?? "", viewDate: createViewDate(dict[Constants.dateKey] ?? ""), reply: dict[Constants.inReplyToKey] ?? "")
+            let tweet = Tweet(
+                id: dict[Constants.idKey] ?? "",
+                author: username,
+                content: dict[Constants.contentKey] ?? "",
+                avatarURL: dict[Constants.avatarKey] ?? "",
+                date: dict[Constants.dateKey] ?? "",
+                viewDate: createViewDate(dict[Constants.dateKey] ?? ""),
+                reply: dict[Constants.inReplyToKey] ?? "")
             feed.append(tweet)
         }
         return feed

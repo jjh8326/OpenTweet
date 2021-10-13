@@ -10,8 +10,17 @@ import Foundation
 import UIKit
 
 class TweetCellHelper {
-    static func setupWith(cell: TweetTableViewCell, rowIndex: Int) -> TweetTableViewCell {
-        let tweet = tweets[rowIndex]
+    static func setupWith(cell: TweetTableViewCell, rowIndex: Int, repliesView: Bool) -> TweetTableViewCell {
+        
+        let tweet: Tweet
+        
+        if repliesView {
+            //Get the tweet from the tweet thread
+            tweet = tweetThread[rowIndex]
+        } else {
+            //Get the tweet from the tweets (main timeline)
+            tweet = tweets[rowIndex]
+        }
         
         cell.authorDateLabel.text = tweet.author + " - " + tweet.viewDate
         cell.contentLabel.text = tweet.content

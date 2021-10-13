@@ -8,10 +8,11 @@
 
 import UIKit
 
+var tweetThread = [Tweet]()
+
 class TweetRepliesViewController: UIViewController {
     
     var selectedTweet: Tweet!
-    var tweetThread = [Tweet]()
     
     @IBOutlet weak var tweetRepliesTableView: UITableView!
     
@@ -24,7 +25,7 @@ class TweetRepliesViewController: UIViewController {
         
         DispatchQueue.global(qos: .background).async {
             //If the tweet is a root tweet the get all the replies
-            self.tweetThread = TweetTimeline.getTweetThreadWith(selectedTweet: self.selectedTweet)
+            tweetThread = TweetTimeline.getTweetThreadWith(selectedTweet: self.selectedTweet)
         }
         
         tweetRepliesTableView.dataSource = self
@@ -74,7 +75,7 @@ extension TweetRepliesViewController: UITableViewDataSource {
         let tweet = tweetThread[indexPath.row]
         
         if tweet.id != "" {
-            cell = TweetCellHelper.setupWith(cell: cell, rowIndex: indexPath.row)
+            cell = TweetCellHelper.setupWith(cell: cell, rowIndex: indexPath.row, repliesView: true)
         }
         
         //Load the no replies view
