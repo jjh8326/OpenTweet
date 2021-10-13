@@ -10,7 +10,7 @@ import Foundation
 
 class TweetTimeline {
     //Get data from JSON
-    static func feedFromBundle() -> [Tweet] {
+    static func fetchFeedFromBundle() {
         var feed = [Tweet]()
         do {
             //Get the url of the json
@@ -21,26 +21,23 @@ class TweetTimeline {
                 let feedDictionary: Dictionary = try JSONSerialization.jsonObject(with: timelineData, options:[]) as! [String: Array<Any>]
                 
                 //If the timeline is empty return
-                guard let timeline: Array = feedDictionary[Constants.dataFileName] else {
+                if let timeline: Array = feedDictionary[Constants.dataFileName] {
+                    //Get the user's feed
+                    feed = getFeedFrom(timeline)
+                } else {
                     print("No data in timeline")
-                    return []
                 }
-
-                //Get the user's feed
-                feed = getFeedFrom(timeline)
             } else {
                 print("File does not exist!")
             }
         } catch {
           print(error.localizedDescription)
         }
-        //Send a notification saying that the tweets are ready to be loaded
-        NotificationCenter.default.post(name: .bundleDataParsed, object: nil, userInfo: nil)
-        //Return the array of tweets
-        return feed
+        //Send a notification saying that the tweets are ready to be loaded with the timeline tweets
+        NotificationCenter.default.post(name: .bundleDataParsed, object: nil, userInfo: [Constants.tweetTimelineKey: feed])
     }
     
-    static func getTweetThreadWith(selectedTweet: Tweet, timeline: [Tweet]) -> [Tweet] {
+    static func fetchTweetThreadWith(selectedTweet: Tweet, timeline: [Tweet]) {
         var tweetThread = [Tweet]()
         if selectedTweet.reply == "" {
             //If the tweet is a root tweet the get all the replies
@@ -68,9 +65,8 @@ class TweetTimeline {
             tweetThread = [selectedTweet, updatedRootTweet]
         }
         
-        NotificationCenter.default.post(name: .tweetThreadCreated, object: nil, userInfo: nil)
-        
-        return tweetThread
+        //Send a notification saying that the tweets are ready to be loaded with the tweet thread
+        NotificationCenter.default.post(name: .tweetThreadCreated, object: nil, userInfo: [Constants.tweetThreadKey: tweetThread])
     }
     
     //Private methods

@@ -25,18 +25,24 @@ class TweetTimelineViewController: UIViewController {
         tweetTimelineTableView.estimatedRowHeight = 600
         
         //Add observers for notifications
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadTweets), name: .bundleDataParsed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTweets(_:)), name: .bundleDataParsed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAvatarAt(_:)), name: .cellAvatarCached, object: nil)
         
         //TODO: 100% need a loading indicator
         
         DispatchQueue.global(qos: .background).async {
-            tweetTimeline = TweetTimeline.feedFromBundle()
+            TweetTimeline.fetchFeedFromBundle()
         }
     }
     
     @objc
-    func reloadTweets() {
+    func reloadTweets(_ notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            if let tweets = userInfo[Constants.tweetTimelineKey] {
+                tweetTimeline = tweets as! [Tweet]
+            }
+        }
+        
         //TODO: Reload with animation
         //Reload the data
         DispatchQueue.main.async {

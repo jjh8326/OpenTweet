@@ -23,4 +23,9 @@ class Constants {
     static let rowIndexKey = "rowIndex"
     static let noRepliesMessage = "There are no replies."
     static let originalMessage = "Original message:\n%@"
+    
+    static let defaultAvatarName = "defaultAvatar"
+    
+    static let tweetTimelineKey = "tweetTimeline"
+    static let tweetThreadKey = "tweetThread"
 }

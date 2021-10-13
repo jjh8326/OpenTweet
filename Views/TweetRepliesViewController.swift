@@ -28,17 +28,23 @@ class TweetRepliesViewController: UIViewController {
         tweetRepliesTableView.estimatedRowHeight = 600
         
         //Add observers for notifications
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadTweets), name: .tweetThreadCreated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTweets(_:)), name: .tweetThreadCreated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAvatarAt(_:)), name: .cellAvatarCached, object: nil)
         
         DispatchQueue.global(qos: .background).async {
             //If the tweet is a root tweet the get all the replies
-            tweetThread = TweetTimeline.getTweetThreadWith(selectedTweet: self.selectedTweet, timeline: tweetTimeline)
+            TweetTimeline.fetchTweetThreadWith(selectedTweet: self.selectedTweet, timeline: tweetTimeline)
         }
     }
     
     @objc
-    func reloadTweets() {
+    func reloadTweets(_ notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            if let tweets = userInfo[Constants.tweetThreadKey] {
+                tweetThread = tweets as! [Tweet]
+            }
+        }
+        
         //TODO: Reload with animation
         //Reload the data
         DispatchQueue.main.async {
