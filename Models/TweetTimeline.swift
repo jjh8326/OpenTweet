@@ -1,5 +1,5 @@
 //
-//  Timeline.swift
+//  TweetTimeline.swift
 //  OpenTweet
 //
 //  Created by Joe H on 10/7/21.
@@ -8,52 +8,70 @@
 
 import Foundation
 
-struct Tweet {
-    let id: String
-    let author: String
-    let content: String
-    let avatarURL: String
-    //Store JSON's date for future sorting
-    let date: String
-    //Store the formatted date for view presentation
-    let viewDate: String
-    let reply: String
-}
-
-class Timeline {
+class TweetTimeline {
     //Get data from JSON
-    static func feedFromBundle() -> [Tweet] {
+    static func fetchFeedFromBundle() {
         var feed = [Tweet]()
         do {
             //Get the url of the json
-            if let timelineJSONURL = Bundle.main.url(forResource: timelineFileName, withExtension: timelineFileType) {
+            if let timelineJSONURL = Bundle.main.url(forResource: Constants.dataFileName, withExtension: Constants.dataFileType) {
                 //Get data from the json
                 let timelineData = try Data(contentsOf: timelineJSONURL)
                 //Convert the json into a dictionary
                 let feedDictionary: Dictionary = try JSONSerialization.jsonObject(with: timelineData, options:[]) as! [String: Array<Any>]
                 
-                //If the timeline is empty return
-                guard let timeline: Array = feedDictionary[timelineFileName] else {
+                if let timeline: Array = feedDictionary[Constants.dataFileName] {
+                    //Get the user's feed
+                    feed = getFeedFrom(timeline)
+                } else {
                     print("No data in timeline")
-                    return []
                 }
-
-                //Get the user's feed
-                feed = getFeedFrom(timeline)
             } else {
                 print("File does not exist!")
             }
         } catch {
           print(error.localizedDescription)
         }
-        //Send a notification saying that the tweets are ready to be loaded
-        NotificationCenter.default.post(name: .timelineDataParsed, object: nil, userInfo: nil)
-        //Return the array of tweets
-        return feed
+        //Send a notification saying that the tweets are ready to be loaded on the view
+        NotificationCenter.default.post(name: .bundleDataParsed, object: nil, userInfo: [Constants.tweetTimelineKey: feed])
     }
     
+    static func fetchTweetThreadWith(selectedTweet: Tweet, timeline: [Tweet]) {
+        var tweetThread = [Tweet]()
+        if selectedTweet.reply == "" {
+            //If the tweet is a root tweet the get all the replies
+            tweetThread = TweetTimeline.getTweetRepliesFor(rootTweetID: selectedTweet.id, timeline: timeline)
+        } else {
+            //First tweet in the thread should be the selected tweet
+            for i in 0..<timeline.count {
+                //If the tweet is the tweet the selected tweet is replying to then add it to our tweet thread
+                if timeline[i].id == selectedTweet.reply {
+                    tweetThread.append(timeline[i])
+                }
+            }
+            let rootTweet = tweetThread[0]
+            
+            //Format the content so a user knows its a response to tweet below it
+            let updatedRootContent = String(format: Constants.originalMessage, rootTweet.content)
+            let updatedRootTweet = Tweet(id: rootTweet.id,
+                                         author: rootTweet.author,
+                                         content: updatedRootContent,
+                                         avatarURL: rootTweet.avatarURL,
+                                         date: rootTweet.date,
+                                         viewDate: rootTweet.viewDate,
+                                         reply: rootTweet.reply)
+                
+            tweetThread = [selectedTweet, updatedRootTweet]
+        }
+        
+        //Send a notification saying that the tweets are ready to be loaded with the tweet thread
+        NotificationCenter.default.post(name: .tweetThreadCreated, object: nil, userInfo: [Constants.tweetThreadKey: tweetThread])
+    }
+    
+    //Private methods
+    
     //Get the tweet's replies
-    static func getTweetRepliesFor(rootTweetID: String, timeline: [Tweet]) -> [Tweet] {
+    private static func getTweetRepliesFor(rootTweetID: String, timeline: [Tweet]) -> [Tweet] {
         //Store our replies in a dictionary with a key of the date
         //NOTE: Assume all our dates are unique, if this were a prod environment we could store micro seconds in the json or use some other identifer to sort the tweets
         var tweetReplies = [String: Tweet]()
@@ -81,19 +99,20 @@ class Timeline {
             }
         }
         
-        NotificationCenter.default.post(name: .tweetThreadCreated, object: nil, userInfo: nil)
-        
         //If there are no tweets and the tweet is not a reply then the cell will say there is no reply
         if sortedTweetReplies.count == 0 {
-            sortedTweetReplies.append(Tweet(id: "", author: "", content: "There are no replies.", avatarURL: "", date: "", viewDate: "", reply: ""))
+            sortedTweetReplies.append(Tweet(id: "",
+                                            author: "",
+                                            content: Constants.noRepliesMessage,
+                                            avatarURL: "",
+                                            date: "",
+                                            viewDate: "",
+                                            reply: ""))
         }
         
         return sortedTweetReplies
     }
     
-    //Private methods
-    
-    //TODO: Better method name here
     private static func getFeedFrom(_ timeline: [Any]) -> [Tweet] {
         var feed = [Tweet]()
         //Create a tweet from each array in the dictionary
@@ -101,20 +120,26 @@ class Timeline {
             let dict: Dictionary = timeline[i] as! [String: String]
             //Assuming it's standard for all the user names to start with @, remove the @ symbol to better match actual twitter
             var username = ""
-            if let authorValue = dict[authorKey] {
-                //TODO: Fix warning here
-                username = authorValue.substring(from: authorValue.index(authorValue.startIndex, offsetBy: 1))
+            if let authorValue = dict[Constants.authorKey] {
+                username = authorValue
+                //Remove the @ symbol in the author of the tweet
+                username.removeFirst()
             }
             
             //Get the data from the dictionary and create a tweet
-            let tweet = Tweet(id: dict[idKey] ?? "", author: username, content: dict[contentKey] ?? "", avatarURL: dict[avatarKey] ?? "", date: dict[dateKey] ?? "", viewDate: createViewDate(dict[dateKey] ?? ""), reply: dict[inReplyToKey] ?? "")
+            let tweet = Tweet(
+                id: dict[Constants.idKey] ?? "",
+                author: username,
+                content: dict[Constants.contentKey] ?? "",
+                avatarURL: dict[Constants.avatarKey] ?? "",
+                date: dict[Constants.dateKey] ?? "",
+                viewDate: createViewDate(dict[Constants.dateKey] ?? ""),
+                reply: dict[Constants.inReplyToKey] ?? "")
             feed.append(tweet)
         }
         return feed
     }
 
-    //TODO: Create some unit tests here
-    
     //In order to better match the twitter look, this code is going to return how many years, days or hours the tweet was posted
     private static func createViewDate(_ tweetDate: String) -> String {
         //The date that is in the json is an ISO date
@@ -122,14 +147,17 @@ class Timeline {
         //Set the locale to the user's locale
         isoDateFormatter.locale = Locale.current
         //Set the formatter to the ISO format
-        isoDateFormatter.dateFormat = isoDateFormatString
+        isoDateFormatter.dateFormat = Constants.isoDateFormatString
         var formattedDateString: String = ""
         
         //Create the date if it's valid
         if let date = isoDateFormatter.date(from: tweetDate) {
             let diffComponents = Calendar.current.dateComponents([.year,.month,.day,.hour], from: date, to: Date())
             //Get the years, months, days and hours passed since the tweet was posted
-            if let years = diffComponents.year, let months = diffComponents.month, let days = diffComponents.day, let hours = diffComponents.hour {
+            if let years = diffComponents.year,
+               let months = diffComponents.month,
+               let days = diffComponents.day,
+               let hours = diffComponents.hour {
                 
                 //If the year is greater than 0 use years to report tweet date, etc, default to hours if the tweet is less than a day old
                 if (years > 0) {
