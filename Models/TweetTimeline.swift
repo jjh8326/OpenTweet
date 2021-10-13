@@ -102,7 +102,7 @@ class TweetTimeline {
         
         //If there are no tweets and the tweet is not a reply then the cell will say there is no reply
         if sortedTweetReplies.count == 0 {
-            sortedTweetReplies.append(Tweet(id: "", author: "", content: "There are no replies.", avatarURL: "", date: "", viewDate: "", reply: ""))
+            sortedTweetReplies.append(Tweet(id: "", author: "", content: Constants.noRepliesMessage, avatarURL: "", date: "", viewDate: "", reply: ""))
         }
         
         return sortedTweetReplies

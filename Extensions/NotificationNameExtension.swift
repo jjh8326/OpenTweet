@@ -11,4 +11,5 @@ import Foundation
 extension Notification.Name {
     static let bundleDataParsed = NSNotification.Name(rawValue: "BundleDataParsed")
     static let tweetThreadCreated = NSNotification.Name(rawValue: "TweetThreadCreated")
+    static let cellAvatarCached = NSNotification.Name(rawValue: "CellAvatarCached")
 }

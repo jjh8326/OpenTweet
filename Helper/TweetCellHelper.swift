@@ -7,13 +7,16 @@
 //
 
 import Foundation
+import UIKit
 
 class TweetCellHelper {
-    static func setupWith(cell: TweetTableViewCell, tweet: Tweet) -> TweetTableViewCell {
+    static func setupWith(cell: TweetTableViewCell, rowIndex: Int) -> TweetTableViewCell {
+        let tweet = tweets[rowIndex]
+        
         cell.authorDateLabel.text = tweet.author + " - " + tweet.viewDate
         cell.contentLabel.text = tweet.content
         
-        //Make our avatar's image circular
+        //Make the avatar's image circular
         cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.size.width / 2
         
         if (tweet.avatarURL != "") {
@@ -21,16 +24,9 @@ class TweetCellHelper {
             if let image = avatarCache.object(forKey: tweet.avatarURL as NSString) {
                 cell.avatarImageView.image = image
             } else {
-                //If it does not exist then download it
                 DispatchQueue.global(qos: .background).async {
-                    let avatarObject = AvatarFetcher.getImageWith(avatarURL: tweet.avatarURL)
-                    if avatarObject.count != 0 {
-                        let image = avatarObject[0]
-                        avatarCache.setObject(image, forKey: tweet.avatarURL as NSString)
-                        DispatchQueue.main.async {
-                            cell.avatarImageView.image = image
-                        }
-                    }
+                    //If the image is not in the cache then queue it up for fetching and setting
+                    AvatarFetcher.getAvatarWith(avatarURLString: tweet.avatarURL, rowIndex: rowIndex)
                 }
             }
         }

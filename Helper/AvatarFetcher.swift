@@ -10,29 +10,25 @@ import UIKit
 
 class AvatarFetcher {
     //Get the avatar image, if the function fails then it sends back an empty array
-    static func getImageWith(avatarURL: String) -> [UIImage] {
-        var avatarObject = [UIImage]()
+    static func getAvatarWith(avatarURLString: String, rowIndex: Int) {
         //Get the avatar's image URL from the tweet
-        guard let url = URL(string: avatarURL) else {
-            print("Invalid URL used")
-            return []
-        }
-        //Download the data using a valid URL
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            //If something happened when retrieving the image then return an empty array
-            if error != nil {
-                print(error!)
-            }
-            //Need to have many checks because you can still retrieve no data or a bad image
-            if let imageData = data {
-                if !imageData.isEmpty {
-                    if let image = UIImage(data: data!) {
-                        avatarObject.append(image)
+        if let avatarURL = URL(string: avatarURLString) {
+            //Download the data using a valid URL
+            URLSession.shared.dataTask(with: avatarURL) { data, response, error in
+                //If something happened when retrieving the image then return an empty array
+                if error != nil {
+                    print(error!)
+                }
+                //Need to have several checks because you can still retrieve no data or a bad image
+                if let imageData = data {
+                    if !imageData.isEmpty {
+                        if let image = UIImage(data: data!) {
+                            avatarCache.setObject(image, forKey: avatarURLString as NSString)
+                            NotificationCenter.default.post(name: .cellAvatarCached, object: nil, userInfo: [Constants.rowIndexKey: rowIndex])
+                        }
                     }
                 }
-            }
-        }.resume()
-
-        return avatarObject
+            }.resume()
+        }
     }
 }

@@ -31,15 +31,30 @@ class TweetRepliesViewController: UIViewController {
         tweetRepliesTableView.rowHeight = UITableView.automaticDimension
         tweetRepliesTableView.estimatedRowHeight = 600
         
-        //Add observers for our notifications
+        //Add observers for notifications
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTweets), name: .tweetThreadCreated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadAvatarAt(_:)), name: .cellAvatarCached, object: nil)
     }
     
     @objc
     func reloadTweets() {
+        //TODO: Reload with animation
         //Reload the data
         DispatchQueue.main.async {
             self.tweetRepliesTableView.reloadData()
+        }
+    }
+    
+    @objc
+    func reloadAvatarAt(_ notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            if let rowIndex = userInfo[Constants.rowIndexKey] {
+                let rowIndexPath = IndexPath(row: rowIndex as! Int, section: 0);
+                DispatchQueue.main.async {
+                    //TODO: Consider animation
+                    self.tweetRepliesTableView.reloadRows(at: [rowIndexPath], with: .none)
+                }
+            }
         }
     }
     
@@ -58,11 +73,14 @@ extension TweetRepliesViewController: UITableViewDataSource {
         //Get the tweet
         let tweet = tweetThread[indexPath.row]
         
-        cell = TweetCellHelper.setupWith(cell: cell, tweet: tweet)
+        if tweet.id != "" {
+            cell = TweetCellHelper.setupWith(cell: cell, rowIndex: indexPath.row)
+        }
         
         //Load the no replies view
         if (tweet.id == "") {
             cell.authorDateLabel.text = ""
+            cell.contentLabel.text = tweet.content
             cell.avatarImageView.isHidden = true
         }
         

@@ -19,4 +19,7 @@ class Constants {
     static let inReplyToKey = "inReplyTo"
 
     static let isoDateFormatString = "yyyy-MM-dd'T'HH:mm:ssZ"
+    
+    static let rowIndexKey = "rowIndex"
+    static let noRepliesMessage = "There are no replies."
 }
