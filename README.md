@@ -5,6 +5,7 @@ Known issues:
 - UDPATE: The below issue has appeared to have gone away. I believe this happened when I upgraded to Big Sur and got on the latest version of XCode. Before that I was on a older version and the warning may have been a bug, leaving this known isuse here just in case.
     There is a warning in Main.storyboard, if you reset the frames on the TimeLineViewController the warnings go away but some of the content goes off screen. Doing this will not break the autolayout but I am leaving it as is for visiblity.
 - The app should have a network detector and not attempt to download images if it does not have network connectivity, in that same thought this app is based off mock data but in the real world the data would be data downloaded from a server, so the whole app should not load if not connected to the internet.
+- Changing the tweet timeline / tweet thread code to send the data over a notification broke the unit tests that tested TweetTimeline (as expected but I needed to do this to fix an issue where the data was not loading.
 
 Future updates (if I had infinite time):
 - I would like to implement a UILoading indicator for when the json and replies are loading, if time permits I will implement this
