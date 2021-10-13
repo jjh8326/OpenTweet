@@ -57,7 +57,7 @@ class TweetTimeline {
             let rootTweet = tweetThread[0]
             
             //Format the content so a user knows its a response to tweet below it
-            let updatedRootContent = String(format: "Original message: %@", rootTweet.content)
+            let updatedRootContent = String(format: "Original message:\n%@", rootTweet.content)
             let updatedRootTweet = Tweet(id: rootTweet.id,
                                          author: rootTweet.author,
                                          content: updatedRootContent,
