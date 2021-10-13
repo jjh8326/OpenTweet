@@ -20,7 +20,6 @@ class TweetTimeline {
                 //Convert the json into a dictionary
                 let feedDictionary: Dictionary = try JSONSerialization.jsonObject(with: timelineData, options:[]) as! [String: Array<Any>]
                 
-                //If the timeline is empty return
                 if let timeline: Array = feedDictionary[Constants.dataFileName] {
                     //Get the user's feed
                     feed = getFeedFrom(timeline)
@@ -33,7 +32,7 @@ class TweetTimeline {
         } catch {
           print(error.localizedDescription)
         }
-        //Send a notification saying that the tweets are ready to be loaded with the timeline tweets
+        //Send a notification saying that the tweets are ready to be loaded on the view
         NotificationCenter.default.post(name: .bundleDataParsed, object: nil, userInfo: [Constants.tweetTimelineKey: feed])
     }
     
@@ -114,7 +113,6 @@ class TweetTimeline {
         return sortedTweetReplies
     }
     
-    //TODO: Better method name here
     private static func getFeedFrom(_ timeline: [Any]) -> [Tweet] {
         var feed = [Tweet]()
         //Create a tweet from each array in the dictionary
@@ -142,8 +140,6 @@ class TweetTimeline {
         return feed
     }
 
-    //TODO: Create some unit tests here
-    
     //In order to better match the twitter look, this code is going to return how many years, days or hours the tweet was posted
     private static func createViewDate(_ tweetDate: String) -> String {
         //The date that is in the json is an ISO date

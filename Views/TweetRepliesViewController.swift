@@ -15,8 +15,6 @@ class TweetRepliesViewController: UIViewController {
     var selectedTweet: Tweet!
     
     @IBOutlet weak var tweetRepliesTableView: UITableView!
-    
-    //TODO: Make sure assets are used properly
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +30,7 @@ class TweetRepliesViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAvatarAt(_:)), name: .cellAvatarCached, object: nil)
         
         DispatchQueue.global(qos: .background).async {
-            //If the tweet is a root tweet the get all the replies
+            //If the tweet is a root tweet the get all the replies, if the tweet is a reply to another tweet then display that tweet and the tweet it is replying to
             TweetTimeline.fetchTweetThreadWith(selectedTweet: self.selectedTweet, timeline: tweetTimeline)
         }
     }
@@ -46,6 +44,7 @@ class TweetRepliesViewController: UIViewController {
         }
         
         //TODO: Reload with animation
+        
         //Reload the data
         DispatchQueue.main.async {
             self.tweetRepliesTableView.reloadData()
@@ -79,7 +78,7 @@ extension TweetRepliesViewController: UITableViewDataSource {
         
         //Get the tweet
         var tweet = Tweet()
-        //Will stop crashing if index out of range
+        //Will stop the app from crashing if index is out of range
         if tweetThread.indices.contains(indexPath.row) {
             tweet = tweetThread[indexPath.row]
         }

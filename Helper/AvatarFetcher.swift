@@ -9,13 +9,13 @@
 import UIKit
 
 class AvatarFetcher {
-    //Get the avatar image, if the function fails then it sends back an empty array
+    //Get the avatar image
     static func getAvatarWith(avatarURLString: String, rowIndex: Int) {
         //Get the avatar's image URL from the tweet
         if let avatarURL = URL(string: avatarURLString) {
             //Download the data using a valid URL
             URLSession.shared.dataTask(with: avatarURL) { data, response, error in
-                //If something happened when retrieving the image then return an empty array
+                //If something happened when retrieving the image then print the error
                 if error != nil {
                     print(error!)
                 }

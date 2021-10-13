@@ -12,7 +12,7 @@ class TweetTests: XCTestCase {
     func testCreatingANewTweetWithValidData() {
         let sut = Tweet(id: "0023", author: "guy-who-wants-a-job", content: "Test tweet.", avatarURL: "", date: "2019-10-12T10:03:00-09:00", viewDate: "2y", reply: "")
         
-        TweetTests.testTweetsForFieldsWith(tweetArray: [sut])
+        TweetTests.testTweetForFieldsWith(tweet: sut)
     }
     
     //This is a flimsy test but it's used to add code coverage
@@ -25,16 +25,12 @@ class TweetTests: XCTestCase {
     
     //Helper methods
     
-    static func testTweetsForFieldsWith(tweetArray: [Tweet]) {
-        //Test to make sure all the tweets that were created are valid
-        for i in 0..<tweetArray.count {
-            let sut = tweetArray[i]
-            //Each tweet must have an id, author, content, date, view date
-            XCTAssert(sut.id != "")
-            XCTAssert(sut.author != "")
-            XCTAssert(sut.content != "")
-            XCTAssert(sut.date != "")
-            XCTAssert(sut.viewDate != "")
-        }
+    static func testTweetForFieldsWith(tweet: Tweet) {
+        //Test to make that the tweet is valid
+        XCTAssert(tweet.id != "")
+        XCTAssert(tweet.author != "")
+        XCTAssert(tweet.content != "")
+        XCTAssert(tweet.date != "")
+        XCTAssert(tweet.viewDate != "")
     }
 }

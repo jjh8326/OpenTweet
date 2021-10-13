@@ -13,7 +13,7 @@ class TimelineTests: XCTestCase {
     //Tweet Timeline test
     
     //When given valid JSON and nodes return the appropriate number of tweets
-    //Nodes are tweets in the json
+    //Nodes are tweets in the json - root node is a node that is not in reply to anything
     func testTweetTimelineFromBundleWhenNodesReturnProperTweets() {
         //Add observers for notifications
         NotificationCenter.default.addObserver(self, selector: #selector(testTweetTimelineFromNotification(_:)), name: .bundleDataParsed, object: nil)
@@ -21,7 +21,7 @@ class TimelineTests: XCTestCase {
         TweetTimeline.fetchFeedFromBundle()
         
         //Sleep to allow time for bundle to be parsed and for notification to be observed
-        sleep(20)
+        sleep(10)
     }
     
     //Method the notification calls

@@ -16,7 +16,6 @@ class TweetCellHelper {
         
         //Set the default avatar for now
         cell.avatarImageView.image = UIImage(named: Constants.defaultAvatarName)
-
         
         //Make the avatar's image circular
         cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.size.width / 2
@@ -36,7 +35,7 @@ class TweetCellHelper {
             }
         }
         
-        //Work-around to fix iOS issue where cell image does not load
+        //Potential work-around to fix iOS issue where cell image does not load
         cell.setNeedsLayout()
         
         return cell

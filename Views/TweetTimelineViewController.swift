@@ -9,12 +9,10 @@
 import UIKit
 
 var avatarCache: NSCache = NSCache<NSString, UIImage>()
+//Data structure to hold our tweet replies, ordered by order in the json data
 var tweetTimeline = [Tweet]()
 
 class TweetTimelineViewController: UIViewController {
-    //Data structure to hold our tweet replies, ordered by date
-    var tweetReplies = [String: [Tweet]]()
-    
     @IBOutlet weak var tweetTimelineTableView: UITableView!
     
 	override func viewDidLoad() {
@@ -28,7 +26,7 @@ class TweetTimelineViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTweets(_:)), name: .bundleDataParsed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAvatarAt(_:)), name: .cellAvatarCached, object: nil)
         
-        //TODO: 100% need a loading indicator
+        //TODO: Loading indicator
         
         DispatchQueue.global(qos: .background).async {
             TweetTimeline.fetchFeedFromBundle()
@@ -44,6 +42,7 @@ class TweetTimelineViewController: UIViewController {
         }
         
         //TODO: Reload with animation
+        
         //Reload the data
         DispatchQueue.main.async {
             self.tweetTimelineTableView.reloadData()
@@ -79,7 +78,7 @@ extension TweetTimelineViewController: UITableViewDataSource {
         
         //Get the tweet
         var tweet = Tweet()
-        //Will stop crashing if index out of range
+        //Will stop the app from crashing if index is out of range
         if tweetTimeline.indices.contains(indexPath.row) {
             tweet = tweetTimeline[indexPath.row]
         }
