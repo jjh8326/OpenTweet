@@ -52,6 +52,13 @@
                 "content": "@ot_competitor it's ok, just let it out. There's enough room for the both of us.",
                 "inReplyTo": "00004",
                 "date": "2020-09-30T10:33:00-08:00"
+                },
+                {
+                "id": "00008",
+                "author": "@guy-who-wants-a-job",
+                "content": "Wow, this OpenTable app is great!",
+                "avatar": "",
+                "date": "2021-10-12T10:05:00-09:00"
                 }
                 ]
 }

@@ -17,7 +17,8 @@ class TimelineTests: XCTestCase {
         let sut = TweetTimeline.feedFromBundle()
         
         //There are seven nodes in the json, make sure there are seven tweets
-        XCTAssert(sut.count == 7)
+        //Note: I added a node for better code coverage (testing my date code)
+        XCTAssert(sut.count == 8)
         
         //"SUT" stands for subject of unit tests
         testTweetsForFieldsWith(tweetArray: sut)
@@ -64,6 +65,8 @@ class TimelineTests: XCTestCase {
     }
     
     //TODO: Test dates next
+    
+    //TODO: Test Tweet class
     
     //Test for each method in timeline
     override func setUpWithError() throws {
