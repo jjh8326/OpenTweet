@@ -40,8 +40,37 @@ class TweetTimeline {
         return feed
     }
     
+    static func getTweetThreadWith(selectedTweet: Tweet) -> [Tweet] {
+        var tweetThread = [Tweet]()
+        if selectedTweet.reply == "" {
+            //If the tweet is a root tweet the get all the replies
+            tweetThread = TweetTimeline.getTweetRepliesFor(rootTweetID: selectedTweet.id, timeline: tweets)
+        } else {
+            //First tweet in the thread should be the selected tweet
+            for i in 0..<tweets.count {
+                //If the tweet is the tweet the selected tweet is replying to then add it to our tweet thread
+                if tweets[i].id == selectedTweet.reply {
+                        tweetThread.append(tweets[i])
+                }
+            }
+            //TODO: Consider making Tweet a class so the content can change
+            let rootTweet = tweetThread[0]
+            
+            //Format the content so a user knows its a response to tweet below it
+            let updatedRootContent = String(format: "Original message: %@", rootTweet.content)
+                
+            //TODO: Consider making Tweet a class so the content can change
+            let updatedRootTweet = Tweet(id: rootTweet.id, author: rootTweet.author, content: updatedRootContent, avatarURL: rootTweet.avatarURL, date: rootTweet.date, viewDate: rootTweet.viewDate, reply: rootTweet.reply)
+                
+            tweetThread = [selectedTweet, updatedRootTweet]
+        }
+        return tweetThread
+    }
+    
+    //Private methods
+    
     //Get the tweet's replies
-    static func getTweetRepliesFor(rootTweetID: String, timeline: [Tweet]) -> [Tweet] {
+    private static func getTweetRepliesFor(rootTweetID: String, timeline: [Tweet]) -> [Tweet] {
         //Store our replies in a dictionary with a key of the date
         //NOTE: Assume all our dates are unique, if this were a prod environment we could store micro seconds in the json or use some other identifer to sort the tweets
         var tweetReplies = [String: Tweet]()
@@ -78,8 +107,6 @@ class TweetTimeline {
         
         return sortedTweetReplies
     }
-    
-    //Private methods
     
     //TODO: Better method name here
     private static func getFeedFrom(_ timeline: [Any]) -> [Tweet] {

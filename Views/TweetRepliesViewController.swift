@@ -15,44 +15,16 @@ class TweetRepliesViewController: UIViewController {
     
     @IBOutlet weak var tweetRepliesTableView: UITableView!
     
-    //@IBOutlet weak var tweetThreadTableView: UITableView!
-    
     //TODO: Make sure assets are used properly
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //DONE?: Display a tweet's thread when tapping on a giving tweet. Due to the very simplistic data model made available to you, it's probably best to simplify this: if the user taps on the first tweet of a thread, display all the replies in ascending chronological order,
-        if self.selectedTweet.reply == "" {
-            DispatchQueue.global(qos: .background).async {
-                //TODO: Consider order of replies
-                
-                //If the tweet is a root tweet the get all the replies
-                self.tweetThread = TweetTimeline.getTweetRepliesFor(rootTweetID: self.selectedTweet.id, timeline: tweets)
-            }
-        } else {
-            //First tweet in the thread should be the selected tweet
-            DispatchQueue.global(qos: .background).async { [self] in
-                for i in 0..<tweets.count {
-                    //If the tweet is the tweet the selected tweet is replying to then add it to our tweet thread
-                    if tweets[i].id == self.selectedTweet.reply {
-                        self.tweetThread.append(tweets[i])
-                    }
-                }
-                
-                //TODO: Consider making Tweet a class so the content can change
-                let rootTweet = tweetThread[0]
-                
-                //Format the content so a user knows its a response to tweet below it
-                let updatedRootContent = String(format: "Original message: %@", rootTweet.content)
-                
-                //TODO: Consider making Tweet a class so the content can change
-                let updatedRootTweet = Tweet(id: rootTweet.id, author: rootTweet.author, content: updatedRootContent, avatarURL: rootTweet.avatarURL, date: rootTweet.date, viewDate: rootTweet.viewDate, reply: rootTweet.reply)
-                
-                tweetThread = [self.selectedTweet, updatedRootTweet]
-            }
-            
-            //TODO: Display a loading indicator
+        //TODO: Display a loading indicator
+        
+        DispatchQueue.global(qos: .background).async {
+            //If the tweet is a root tweet the get all the replies
+            self.tweetThread = TweetTimeline.getTweetThreadWith(selectedTweet: self.selectedTweet)
         }
         
         tweetRepliesTableView.dataSource = self
@@ -77,45 +49,16 @@ class TweetRepliesViewController: UIViewController {
     }
 }
 
-//TODO: Duplicate code!
 extension TweetRepliesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(
+        var cell = tableView.dequeueReusableCell(
           withIdentifier: "TweetCell",
           for: indexPath) as! TweetTableViewCell
         
+        //Get the tweet
         let tweet = tweetThread[indexPath.row]
         
-        cell.authorDateLabel.text = tweet.author + " - " + tweet.viewDate
-        cell.contentLabel.text = tweet.content
-        
-        //Make our avatar's image circular
-        cell.avatarImageView.layer.cornerRadius = cell.avatarImageView.frame.size.width / 2
-        
-        
-        //TODO: Delete below test code
-        if (tweet.avatarURL == "") {
-            print("HERE - index = %i", indexPath.row)
-        }
-        
-        if (tweet.avatarURL != "") {
-            //If the image exists in the cache then set the avatar's image
-            if let image = avatarCache.object(forKey: tweet.avatarURL as NSString) {
-                cell.avatarImageView.image = image
-            } else {
-                //If it does not exist then download it
-                DispatchQueue.global(qos: .background).async {
-                    let avatarObject = AvatarFetcher.getImageWith(avatarURL: tweet.avatarURL)
-                    if avatarObject.count != 0 {
-                        let image = avatarObject[0]
-                        avatarCache.setObject(image, forKey: tweet.avatarURL as NSString)
-                        DispatchQueue.main.async {
-                            cell.avatarImageView.image = image
-                        }
-                    }
-                }
-            }
-        }
+        cell = TweetCellHelper.setupWith(cell: cell, tweet: tweet)
         
         //Load the no replies view
         if (tweet.id == "") {
