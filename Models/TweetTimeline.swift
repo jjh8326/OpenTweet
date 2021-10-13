@@ -47,17 +47,17 @@ class TweetTimeline {
             tweetThread = TweetTimeline.getTweetRepliesFor(rootTweetID: selectedTweet.id, timeline: timeline)
         } else {
             //First tweet in the thread should be the selected tweet
-            for i in 0..<tweetTimeline.count {
+            for i in 0..<timeline.count {
                 //If the tweet is the tweet the selected tweet is replying to then add it to our tweet thread
                 if timeline[i].id == selectedTweet.reply {
-                        tweetThread.append(timeline[i])
+                    tweetThread.append(timeline[i])
                 }
             }
             //TODO: Consider making Tweet a class so the content can change
             let rootTweet = tweetThread[0]
             
             //Format the content so a user knows its a response to tweet below it
-            let updatedRootContent = String(format: "Original message:\n%@", rootTweet.content)
+            let updatedRootContent = String(format: Constants.originalMessage, rootTweet.content)
             let updatedRootTweet = Tweet(id: rootTweet.id,
                                          author: rootTweet.author,
                                          content: updatedRootContent,
@@ -134,8 +134,6 @@ class TweetTimeline {
             }
             
             //Get the data from the dictionary and create a tweet
-            
-            // TODO: fix spacing so the construction is easier to read (put each param on a different line)
             let tweet = Tweet(
                 id: dict[Constants.idKey] ?? "",
                 author: username,
