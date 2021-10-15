@@ -27,6 +27,7 @@
 		D88FB56A270FE0CF0097D4BE /* TweetTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88FB569270FE0CF0097D4BE /* TweetTimeline.swift */; };
 		D88FB56C2710F5AE0097D4BE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88FB56B2710F5AE0097D4BE /* Constants.swift */; };
 		D88FB56F2710FF190097D4BE /* TweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88FB56E2710FF190097D4BE /* TweetTableViewCell.swift */; };
+		D8DE378E2719488C00B05635 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DE378D2719488C00B05635 /* UIColorExtension.swift */; };
 		D8EB172227115F38007A8074 /* NotificationNameExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EB172127115F38007A8074 /* NotificationNameExtension.swift */; };
 		D8F739E32716933C001A4B02 /* TweetTimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009C4C6D1D9F0CD600F0BC6C /* TweetTimelineViewController.swift */; };
 		D8F739E42716934F001A4B02 /* TweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88FB56E2710FF190097D4BE /* TweetTableViewCell.swift */; };
@@ -73,6 +74,7 @@
 		D88FB569270FE0CF0097D4BE /* TweetTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetTimeline.swift; sourceTree = "<group>"; };
 		D88FB56B2710F5AE0097D4BE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D88FB56E2710FF190097D4BE /* TweetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetTableViewCell.swift; sourceTree = "<group>"; };
+		D8DE378D2719488C00B05635 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		D8EB172127115F38007A8074 /* NotificationNameExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNameExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -171,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				D8EB172127115F38007A8074 /* NotificationNameExtension.swift */,
+				D8DE378D2719488C00B05635 /* UIColorExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -347,6 +350,7 @@
 				D88FB56F2710FF190097D4BE /* TweetTableViewCell.swift in Sources */,
 				D86FDAD3271636FF007DEC90 /* AvatarFetcher.swift in Sources */,
 				D88FB56C2710F5AE0097D4BE /* Constants.swift in Sources */,
+				D8DE378E2719488C00B05635 /* UIColorExtension.swift in Sources */,
 				D884B6C42714D05D006D7679 /* TweetRepliesViewController.swift in Sources */,
 				D86FDABB2716321B007DEC90 /* Tweet.swift in Sources */,
 			);

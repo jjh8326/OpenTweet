@@ -52,6 +52,12 @@ class TweetTableViewCell: UITableViewCell {
         
         //Potential work-around to fix iOS issue where cell image does not load
         self.setNeedsLayout()
+        
+        //Set the cell's background color
+        let backgroundColorView = UIView()
+        let customOpenTweetBlue = UIColor(rgb: 0x18399A)
+        backgroundColorView.backgroundColor = customOpenTweetBlue
+        self.selectedBackgroundView = backgroundColorView
     }
     
     //Check the content text for usernames and links, then style them appropriately
