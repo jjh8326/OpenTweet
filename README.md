@@ -13,7 +13,7 @@ Future updates (if I had infinite time):
 - I would like to implement a UILoading indicator for when the json and replies are loading
 - I would like to implement UITesting, this would help me get more code coverage. The 50+% I have acheived is not ideal but I feel like it covers the majority of the non UI based code.
 - I would like to animate the cells and views
-- I would like to redo the constraints and make them code based so I can reuse them when need be and design the layout for a table view cell via code instead of interface builder (I know the duplicate table view is not ideal, I have learned alot doing this assignment and would not do that again)
+- I would like to redo the constraints and make them code based so I can reuse them when need be and design the layout for a table view cell via code instead of interface builder (I know the duplicate table view is not ideal, I have learned alot doing this assignment and would not do that again - that is essentially making constraints hardcoded which is bad)
 - I would like to add an error logging class that could be toggled on or off
 - More time to proof read my code would have been great XD
 

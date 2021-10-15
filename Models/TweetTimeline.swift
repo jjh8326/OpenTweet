@@ -72,10 +72,10 @@ class TweetTimeline {
     
     //Get the tweet's replies
     private static func getTweetReplies(forRootTweetID tweetID: String, timeline: [Tweet]) -> [Tweet] {
-        //Store our replies in a dictionary with a key of the date
-        //NOTE: Assume all our dates are unique, if this were a prod environment we could store micro seconds in the json or use some other identifer to sort the tweets
+        //Store our replies in a dictionary with a key of the ID
+        //NOTE: Sorting by tweet ID
         var tweetReplies = [String: Tweet]()
-        var tweetReplyDates = [String]()
+        var tweetReplyIDs = [String]()
         var sortedTweetReplies = [Tweet]()
         
         //Loop through the timeline and add all non root nodes that have a reply value set to the rootTweetID
@@ -83,18 +83,18 @@ class TweetTimeline {
             let tweet = timeline[i]
             if (tweet.reply == tweetID) {
                 //If the reply ID is the root ID then add it to the replies
-                tweetReplies[tweet.date] = tweet
-                tweetReplyDates.append(tweet.date)
+                tweetReplies[tweet.id] = tweet
+                tweetReplyIDs.append(tweet.id)
             }
         }
         
-        //Sort our dates
-        tweetReplyDates.sort()
+        //Sort our IDs
+        tweetReplyIDs.sort()
         
-        //Go through our sorted reply dates and add the tweets to the sorted tweets array
-        for i in 0..<tweetReplyDates.count {
+        //Go through our sorted reply IDs and add the tweets to the sorted tweets array
+        for i in 0..<tweetReplyIDs.count {
             //Add the tweets in reversed order so the newest replies appear first
-            if let reply = tweetReplies[tweetReplyDates[tweetReplyDates.count - 1 - i]] {
+            if let reply = tweetReplies[tweetReplyIDs[tweetReplyIDs.count - 1 - i]] {
                 sortedTweetReplies.append(reply)
             }
         }
@@ -146,10 +146,10 @@ class TweetTimeline {
     
     //Sort the tweets by ascending chronological order
     private static func sort(timelineTweets: [Tweet]) -> [Tweet] {
-        //Store our tweets in a dictionary with a key of the date
-        //NOTE: Assume all our dates are unique, if this were a prod environment we could store micro seconds in the json or use some other identifer to sort the tweets
+        //Store our tweets in a dictionary with a key of the ID
+        //NOTE: Sorting by tweet ID
         var unsortedTweets = [String: Tweet]()
-        var tweetDates = [String]()
+        var tweetIDs = [String]()
         var sortedTimelineTweets = [Tweet]()
         
         //Loop through the timeline and add all non root nodes that have a reply value set to the rootTweetID
@@ -158,16 +158,16 @@ class TweetTimeline {
             //Add the tweet date as a key to a dictionary with a value of the tweet for easy lookup
             unsortedTweets[tweet.date] = tweet
             //Add the tweet's date to an array that will be sorted
-            tweetDates.append(tweet.date)
+            tweetIDs.append(tweet.date)
         }
         
         //Sort our dates
-        tweetDates.sort()
+        tweetIDs.sort()
         
         //Go through our sorted tweet dates and add the tweets to the tweets array
-        for i in 0..<tweetDates.count {
+        for i in 0..<tweetIDs.count {
             //Add the tweets in reversed order so the newest replies appear first
-            if let reply = unsortedTweets[tweetDates[tweetDates.count - 1 - i]] {
+            if let reply = unsortedTweets[tweetIDs[tweetIDs.count - 1 - i]] {
                 sortedTimelineTweets.append(reply)
             }
         }
