@@ -22,7 +22,7 @@ class TweetTimeline {
                 
                 if let timeline: Array = feedDictionary[Constants.dataFileName] {
                     //Get the user's feed
-                    feed = getFeedFrom(timeline)
+                    feed = getFeed(fromTimeline: timeline)
                 } else {
                     print("No data in timeline")
                 }
@@ -36,16 +36,16 @@ class TweetTimeline {
         NotificationCenter.default.post(name: .bundleDataParsed, object: nil, userInfo: [Constants.tweetTimelineKey: feed])
     }
     
-    static func fetchTweetThreadWith(selectedTweet: Tweet, timeline: [Tweet]) {
+    static func fetchTweetThread(withSelectedTweet tweet: Tweet, timeline: [Tweet]) {
         var tweetThread = [Tweet]()
-        if selectedTweet.reply == "" {
+        if tweet.reply == "" {
             //If the tweet is a root tweet the get all the replies
-            tweetThread = TweetTimeline.getTweetRepliesFor(rootTweetID: selectedTweet.id, timeline: timeline)
+            tweetThread = TweetTimeline.getTweetReplies(forRootTweetID: tweet.id, timeline: timeline)
         } else {
             //First tweet in the thread should be the selected tweet
             for i in 0..<timeline.count {
                 //If the tweet is the tweet the selected tweet is replying to then add it to our tweet thread
-                if timeline[i].id == selectedTweet.reply {
+                if timeline[i].id == tweet.reply {
                     tweetThread.append(timeline[i])
                 }
             }
@@ -61,7 +61,7 @@ class TweetTimeline {
                                          viewDate: rootTweet.viewDate,
                                          reply: rootTweet.reply)
                 
-            tweetThread = [selectedTweet, updatedRootTweet]
+            tweetThread = [tweet, updatedRootTweet]
         }
         
         //Send a notification saying that the tweets are ready to be loaded with the tweet thread
@@ -71,7 +71,7 @@ class TweetTimeline {
     //Private methods
     
     //Get the tweet's replies
-    private static func getTweetRepliesFor(rootTweetID: String, timeline: [Tweet]) -> [Tweet] {
+    private static func getTweetReplies(forRootTweetID id: String, timeline: [Tweet]) -> [Tweet] {
         //Store our replies in a dictionary with a key of the date
         //NOTE: Assume all our dates are unique, if this were a prod environment we could store micro seconds in the json or use some other identifer to sort the tweets
         var tweetReplies = [String: Tweet]()
@@ -81,7 +81,7 @@ class TweetTimeline {
         //Loop through the timeline and add all non root nodes that have a reply value set to the rootTweetID
         for i in 0..<timeline.count {
             let tweet = timeline[i]
-            if (tweet.reply == rootTweetID) {
+            if (tweet.reply == id) {
                 //If the reply ID is the root ID then add it to the replies
                 tweetReplies[tweet.date] = tweet
                 tweetReplyDates.append(tweet.date)
@@ -113,7 +113,7 @@ class TweetTimeline {
         return sortedTweetReplies
     }
     
-    private static func getFeedFrom(_ timeline: [Any]) -> [Tweet] {
+    private static func getFeed(fromTimeline timeline: [Any]) -> [Tweet] {
         var feed = [Tweet]()
         //Create a tweet from each array in the dictionary
         for i in 0..<timeline.count {
@@ -133,59 +133,32 @@ class TweetTimeline {
                 content: dict[Constants.contentKey] ?? "",
                 avatarURL: dict[Constants.avatarKey] ?? "",
                 date: dict[Constants.dateKey] ?? "",
-                //If you do not like the twitter-esque view date you can toggle it off with this line, just in case a person reviewing this code wanted the actual date as stated in the miniumum requirements
-                //viewDate: createViewDate(dict[Constants.dateKey] ?? "", requiredDate: true),
-                viewDate: createViewDate(dict[Constants.dateKey] ?? ""),
+                viewDate: createViewDate(withTweetDate: dict[Constants.dateKey] ?? ""),
                 reply: dict[Constants.inReplyToKey] ?? "")
             feed.append(tweet)
         }
         return feed
     }
 
-    //In order to better match the twitter look, this code is going to return how many years, days, etc ago the tweet was posted
-    private static func createViewDate(_ tweetDate: String, requiredDate: Bool = false) -> String {
+    //Format the date for the required date time format
+    private static func createViewDate(withTweetDate dateString: String) -> String {
         //The date that is in the json is an ISO date
         let isoDateFormatter = DateFormatter()
         //Set the locale to the user's locale
         isoDateFormatter.locale = Locale.current
         //Set the formatter to the ISO format
         isoDateFormatter.dateFormat = Constants.isoDateFormatString
-        var formattedDateString: String = ""
         
         //Create the date if it's valid
-        if let date = isoDateFormatter.date(from: tweetDate) {
+        if let date = isoDateFormatter.date(from: dateString) {
             //If you want to make sure I accomplished the original requirement, this will output a non twitter-esque date
-            if (requiredDate == true) {
-                let requiredDateFormatter = DateFormatter()
-                requiredDateFormatter.dateFormat = Constants.requiredDateFormatString
-                return requiredDateFormatter.string(from: date)
-            }
-            
-            let diffComponents = Calendar.current.dateComponents([.year,.month,.day,.hour, .minute, .second], from: date, to: Date())
-            //Get the years, months, etc passed since the tweet was posted
-            if let years = diffComponents.year,
-               let months = diffComponents.month,
-               let days = diffComponents.day,
-               let hours = diffComponents.hour,
-               let minutes = diffComponents.minute,
-               let seconds = diffComponents.second {
-                
-                //If the year is greater than 0 use years to report tweet date, etc, default to seconds if the tweet is not even a minute old
-                if (years > 0) {
-                    formattedDateString = String(format: "%iy", years)
-                } else if (months > 0) {
-                    formattedDateString = String(format: "%imo", months)
-                } else if (days > 0){
-                    formattedDateString = String(format: "%id", days)
-                } else if (hours > 0) {
-                    formattedDateString = String(format: "%ih", hours)
-                } else if (minutes > 0) {
-                    formattedDateString = String(format: "%im", minutes)
-                } else {
-                    formattedDateString = String(format: "%is", seconds)
-                }
-            }
+            let requiredDateFormatter = DateFormatter()
+            requiredDateFormatter.dateFormat = Constants.requiredDateFormatString
+            return requiredDateFormatter.string(from: date)
         }
-        return formattedDateString
+        //TODO: Error logging class
+        print("Failed to format date!")
+        //If for whatever reason the date failed to format then return the original date
+        return dateString
     }
 }

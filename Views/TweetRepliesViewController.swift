@@ -31,7 +31,7 @@ class TweetRepliesViewController: UIViewController {
         
         DispatchQueue.global(qos: .background).async {
             //If the tweet is a root tweet the get all the replies, if the tweet is a reply to another tweet then display that tweet and the tweet it is replying to
-            TweetTimeline.fetchTweetThreadWith(selectedTweet: self.selectedTweet, timeline: tweetTimeline)
+            TweetTimeline.fetchTweetThread(withSelectedTweet: self.selectedTweet, timeline: tweetTimeline)
         }
     }
     
@@ -84,7 +84,7 @@ extension TweetRepliesViewController: UITableViewDataSource {
         }
         
         //Configure the tweet cell
-        cell.configureWith(tweet: tweet, rowIndex: indexPath.row, repliesView: true)
+        cell.configureCell(withTweet: tweet, rowIndex: indexPath.row, repliesView: true)
         
         return cell
     }

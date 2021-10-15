@@ -10,9 +10,9 @@ import UIKit
 
 class AvatarFetcher {
     //Get the avatar image
-    static func fetchAvatarWith(avatarURLString: String, rowIndex: Int) {
+    static func fetchAvatar(withString URLString: String, rowIndex: Int) {
         //Get the avatar's image URL from the tweet
-        if let avatarURL = URL(string: avatarURLString) {
+        if let avatarURL = URL(string: URLString) {
             //Download the data using a valid URL
             URLSession.shared.dataTask(with: avatarURL) { data, response, error in
                 //If something happened when retrieving the image then print the error
@@ -23,7 +23,7 @@ class AvatarFetcher {
                 if let imageData = data {
                     if !imageData.isEmpty {
                         if let image = UIImage(data: data!) {
-                            avatarCache.setObject(image, forKey: avatarURLString as NSString)
+                            avatarCache.setObject(image, forKey: URLString as NSString)
                             NotificationCenter.default.post(name: .cellAvatarCached, object: nil, userInfo: [Constants.rowIndexKey: rowIndex])
                         }
                     }

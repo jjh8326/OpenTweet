@@ -84,7 +84,7 @@ extension TweetTimelineViewController: UITableViewDataSource {
         }
         
         //Configure the tweet cell
-        cell.configureWith(tweet: tweet, rowIndex: indexPath.row, repliesView: false)
+        cell.configureCell(withTweet: tweet, rowIndex: indexPath.row, repliesView: false)
         
         return cell
     }
