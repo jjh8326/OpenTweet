@@ -39,7 +39,7 @@ class TweetTimeline {
     static func fetchTweetThread(withSelectedTweet tweet: Tweet, timeline: [Tweet]) {
         var tweetThread = [Tweet]()
         if tweet.reply == "" {
-            //If the tweet is a root tweet the get all the replies
+            //If the tweet is a root tweet then get all the replies
             tweetThread = TweetTimeline.getTweetReplies(forRootTweetID: tweet.id, timeline: timeline)
         } else {
             //First tweet in the thread should be the selected tweet
@@ -69,49 +69,6 @@ class TweetTimeline {
     }
     
     //Private methods
-    
-    //Get the tweet's replies
-    private static func getTweetReplies(forRootTweetID tweetID: String, timeline: [Tweet]) -> [Tweet] {
-        //Store our replies in a dictionary with a key of the ID
-        //NOTE: Sorting by tweet ID
-        var tweetReplies = [String: Tweet]()
-        var tweetReplyIDs = [String]()
-        var sortedTweetReplies = [Tweet]()
-        
-        //Loop through the timeline and add all non root nodes that have a reply value set to the rootTweetID
-        for i in 0..<timeline.count {
-            let tweet = timeline[i]
-            if (tweet.reply == tweetID) {
-                //If the reply ID is the root ID then add it to the replies
-                tweetReplies[tweet.id] = tweet
-                tweetReplyIDs.append(tweet.id)
-            }
-        }
-        
-        //Sort our IDs
-        tweetReplyIDs.sort()
-        
-        //Go through our sorted reply IDs and add the tweets to the sorted tweets array
-        for i in 0..<tweetReplyIDs.count {
-            //Add the tweets in reversed order so the newest replies appear first
-            if let reply = tweetReplies[tweetReplyIDs[tweetReplyIDs.count - 1 - i]] {
-                sortedTweetReplies.append(reply)
-            }
-        }
-        
-        //If there are no tweets and the tweet is not a reply then the cell will say there is no reply
-        if sortedTweetReplies.count == 0 {
-            sortedTweetReplies.append(Tweet(id: "",
-                                            author: "",
-                                            content: Constants.noRepliesMessage,
-                                            avatarURL: "",
-                                            date: "",
-                                            viewDate: "",
-                                            reply: ""))
-        }
-        
-        return sortedTweetReplies
-    }
     
     private static func getFeed(fromTimeline timeline: [Any]) -> [Tweet] {
         var feed = [Tweet]()
@@ -144,35 +101,74 @@ class TweetTimeline {
         return feed
     }
     
-    //Sort the tweets by ascending chronological order
-    private static func sort(timelineTweets: [Tweet]) -> [Tweet] {
-        //Store our tweets in a dictionary with a key of the ID
-        //NOTE: Sorting by tweet ID
-        var unsortedTweets = [String: Tweet]()
-        var tweetIDs = [String]()
-        var sortedTimelineTweets = [Tweet]()
+    //Get the tweet's replies
+    private static func getTweetReplies(forRootTweetID tweetID: String, timeline: [Tweet]) -> [Tweet] {
+        //Store our replies in a dictionary with a key of the date
+        //NOTE: Sorting by tweet date
+        var tweetReplies = [String: Tweet]()
+        var tweetLookupTable = [String]()
+        var sortedTweetReplies = [Tweet]()
         
         //Loop through the timeline and add all non root nodes that have a reply value set to the rootTweetID
+        for i in 0..<timeline.count {
+            let tweet = timeline[i]
+            if (tweet.reply == tweetID) {
+                //If the reply ID is the root ID then add it to the replies
+                tweetReplies[tweet.date] = tweet
+                tweetLookupTable.append(tweet.date)
+            }
+        }
+        
+        if tweetLookupTable.count == 0 {
+            sortedTweetReplies.append(Tweet(id: "",
+                                            author: "",
+                                            content: Constants.noRepliesMessage,
+                                            avatarURL: "",
+                                            date: "",
+                                            viewDate: "",
+                                            reply: ""))
+        } else {
+            sortedTweetReplies = sort(withTweetDateLookupTable: tweetReplies, withTweetDates: tweetLookupTable)
+        }
+        
+        return sortedTweetReplies
+    }
+    
+    private static func sort(timelineTweets: [Tweet]) -> [Tweet] {
+        //Store our tweets in a dictionary with a key of the date
+        //NOTE: Sorting by tweet date
+        var unsortedTweets = [String: Tweet]()
+        var tweetLookupTable = [String]()
+        
         for i in 0..<timelineTweets.count {
             let tweet = timelineTweets[i]
             //Add the tweet date as a key to a dictionary with a value of the tweet for easy lookup
             unsortedTweets[tweet.date] = tweet
             //Add the tweet's date to an array that will be sorted
-            tweetIDs.append(tweet.date)
+            tweetLookupTable.append(tweet.date)
         }
         
-        //Sort our dates
-        tweetIDs.sort()
+        //Return a sorted array of tweets
+        return sort(withTweetDateLookupTable: unsortedTweets, withTweetDates: tweetLookupTable)
+    }
+    
+    //Sort the timeline tweets by ascending chronological order
+    private static func sort(withTweetDateLookupTable tweets: [String: Tweet], withTweetDates dates: [String]) -> [Tweet] {
+        var sortedTweets = [Tweet]()
         
-        //Go through our sorted tweet dates and add the tweets to the tweets array
-        for i in 0..<tweetIDs.count {
+        //Sort our IDs
+        var tweetDates = dates
+        tweetDates.sort()
+        
+        //Go through our sorted dates and add the tweets to the sorted tweets array
+        for i in 0..<tweetDates.count {
             //Add the tweets in reversed order so the newest replies appear first
-            if let reply = unsortedTweets[tweetIDs[tweetIDs.count - 1 - i]] {
-                sortedTimelineTweets.append(reply)
+            if let reply = tweets[tweetDates[tweetDates.count - 1 - i]] {
+                sortedTweets.append(reply)
             }
         }
         
-        return sortedTimelineTweets
+        return sortedTweets
     }
 
     //Format the date for the required date time format
