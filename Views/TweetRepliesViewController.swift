@@ -30,13 +30,14 @@ class TweetRepliesViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAvatarAt(_:)), name: .cellAvatarCached, object: nil)
         
         DispatchQueue.global(qos: .background).async {
-            //If the tweet is a root tweet the get all the replies, if the tweet is a reply to another tweet then display that tweet and the tweet it is replying to
-            TweetTimeline.fetchTweetThreadWith(selectedTweet: self.selectedTweet, timeline: tweetTimeline)
+            //If the tweet is a root tweet then get all the replies, if the tweet is a reply to another tweet then display that tweet and the tweet it is replying to
+            TweetTimeline.fetchTweetThread(withSelectedTweet: self.selectedTweet, timeline: tweetTimeline)
         }
     }
     
     @objc
     func reloadTweets(_ notification: NSNotification) {
+        //Get the timeline from the notification
         if let userInfo = notification.userInfo {
             if let tweets = userInfo[Constants.tweetThreadKey] {
                 tweetThread = tweets as! [Tweet]
@@ -53,6 +54,7 @@ class TweetRepliesViewController: UIViewController {
     
     @objc
     func reloadAvatarAt(_ notification: NSNotification) {
+        //Get the avatar from the notification
         if let userInfo = notification.userInfo {
             if let rowIndex = userInfo[Constants.rowIndexKey] {
                 let rowIndexPath = IndexPath(row: rowIndex as! Int, section: 0);
@@ -73,7 +75,7 @@ class TweetRepliesViewController: UIViewController {
 extension TweetRepliesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
-          withIdentifier: "TweetCell",
+          withIdentifier: Constants.tweetCellIdentifier,
           for: indexPath) as! TweetTableViewCell
         
         //Get the tweet
@@ -84,7 +86,7 @@ extension TweetRepliesViewController: UITableViewDataSource {
         }
         
         //Configure the tweet cell
-        cell.configureWith(tweet: tweet, rowIndex: indexPath.row, repliesView: true)
+        cell.configureCell(withTweet: tweet, rowIndex: indexPath.row)
         
         return cell
     }

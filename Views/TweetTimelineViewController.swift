@@ -9,10 +9,11 @@
 import UIKit
 
 var avatarCache: NSCache = NSCache<NSString, UIImage>()
-//Data structure to hold our tweet replies, ordered by order in the json data
+//Data structure to hold our tweet replies, ordered by ascending date
 var tweetTimeline = [Tweet]()
 
 class TweetTimelineViewController: UIViewController {
+    
     @IBOutlet weak var tweetTimelineTableView: UITableView!
     
 	override func viewDidLoad() {
@@ -35,6 +36,7 @@ class TweetTimelineViewController: UIViewController {
     
     @objc
     func reloadTweets(_ notification: NSNotification) {
+        //Get the timeline from the notification
         if let userInfo = notification.userInfo {
             if let tweets = userInfo[Constants.tweetTimelineKey] {
                 tweetTimeline = tweets as! [Tweet]
@@ -51,6 +53,7 @@ class TweetTimelineViewController: UIViewController {
     
     @objc
     func reloadAvatarAt(_ notification: NSNotification) {
+        //Get the avatar from the notification
         if let userInfo = notification.userInfo {
             if let rowIndex = userInfo[Constants.rowIndexKey] {
                 let rowIndexPath = IndexPath(row: rowIndex as! Int, section: 0);
@@ -73,7 +76,7 @@ class TweetTimelineViewController: UIViewController {
 extension TweetTimelineViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
-          withIdentifier: "TweetCell",
+            withIdentifier: Constants.tweetCellIdentifier,
           for: indexPath) as! TweetTableViewCell
         
         //Get the tweet
@@ -84,7 +87,7 @@ extension TweetTimelineViewController: UITableViewDataSource {
         }
         
         //Configure the tweet cell
-        cell.configureWith(tweet: tweet, rowIndex: indexPath.row, repliesView: false)
+        cell.configureCell(withTweet: tweet, rowIndex: indexPath.row)
         
         return cell
     }

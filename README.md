@@ -1,19 +1,27 @@
 OpenTweet
 =========
 
+Final note:
+    Please just view the entire package via my final commit or the most recent in the main branch, I feel my best work was acheived after my final PR was merged. After reviewing the requirements one final time I realize that I missed dates having times so I redid my tweet cell layout and constraints to support time, as well as removed my twitter-esque time (RIP)
+
 Known issues:
-- UDPATE: The below issue has appeared to have gone away. I believe this happened when I upgraded to Big Sur and got on the latest version of XCode. Before that I was on a older version and the warning may have been a bug, leaving this known isuse here just in case.
-    There is a warning in Main.storyboard, if you reset the frames on the TimeLineViewController the warnings go away but some of the content goes off screen. Doing this will not break the autolayout but I am leaving it as is for visiblity.
 - The app should have a network detector and not attempt to download images if it does not have network connectivity, in that same thought this app is based off mock data but in the real world the data would be data downloaded from a server, so the whole app should not load if not connected to the internet.
-- Changing the tweet timeline / tweet thread code to send the data over a notification broke the unit tests that tested TweetTimeline (as expected but I needed to do this to fix an issue where the data was not loading.
+- Changing the tweet timeline / tweet thread code to send the data over a notification broke the unit tests that tested TweetTimeline (as expected) but I needed to do this to fix an issue where the data was not loading.
+- Sometimes the avatars on cells do not load on the first tap, I suspect this may be a simulator issue...
 
 Future updates (if I had infinite time):
-- I would like to implement a UILoading indicator for when the json and replies are loading, if time permits I will implement this
-- I would like to implement UITesting, this would help me get more code coverage. The 50% I have acheived is not ideal but I feel like it tests the majority of the non UI based code.
+- I would like to implement a UILoading indicator for when the json and replies are loading
+- I would like to implement UITesting, this would help me get more code coverage. The 50+% I have acheived is not ideal but I feel like it covers the majority of the non UI based code.
+- I would like to animate the cells and views
+- I would like to redo the constraints and make them code based so I can reuse them when need be and design the layout for a table view cell via code instead of interface builder (I know the duplicate table view is not ideal, I have learned alot doing this assignment and would not do that again - that is essentially making constraints hardcoded which is bad)
+- I would like to add an error logging class that could be toggled on or off
+- More time to proof read my code would have been great XD
+- Finally, I would like to make the link in the tweet tappable
 
 Notes:
 - I do not squash commits and I also commit frequently, I try to have good commit messages.
-- Most of the base assignment was completed with commit 4dedc073ccd170bd852ed4b33db10d566ec8d2e4, after that you can check PRs to see how I implemented various bonus features.
+- (I thought) Most of the base assignment was completed with commit 4dedc073ccd170bd852ed4b33db10d566ec8d2e4, after that you can check PRs to see how I implemented various bonus features.
+    Update: Please just view the entire package via my final commit or the most recent in the main branch, I feel my best work was acheived after my final PR was merged.
 - I have carefully tested this app with the simulator. I do not currently have an iPhone for testing :(
 - As the code base grew bigger some bugs were introduced, I will try to address them but in the event that I do not I have tried my best to prevent crashing.
 

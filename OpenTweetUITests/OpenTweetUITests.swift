@@ -9,6 +9,8 @@
 import XCTest
 
 class OpenTweetUITests: XCTestCase {
+    
+    //TODO: If I had more time this would greatly increase code coverage
         
     override func setUp() {
         super.setUp()
