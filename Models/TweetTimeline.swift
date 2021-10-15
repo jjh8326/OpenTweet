@@ -51,7 +51,7 @@ class TweetTimeline {
             }
             let rootTweet = tweetThread[0]
             
-            //Format the content so a user knows its a response to tweet below it
+            //Format the content so a user knows the tweet below the tapped tweet is the original message
             let updatedRootContent = String(format: Constants.originalMessage, rootTweet.content)
             let updatedRootTweet = Tweet(id: rootTweet.id,
                                          author: rootTweet.author,
@@ -156,13 +156,13 @@ class TweetTimeline {
     private static func sort(withTweetDateLookupTable tweets: [String: Tweet], withTweetDates dates: [String]) -> [Tweet] {
         var sortedTweets = [Tweet]()
         
-        //Sort our IDs
+        //Sort our dates
         var tweetDates = dates
         tweetDates.sort()
         
         //Go through our sorted dates and add the tweets to the sorted tweets array
         for i in 0..<tweetDates.count {
-            //Add the tweets in reversed order so the newest replies appear first
+            //Add the tweets in reversed order so the newest tweets appear first
             if let reply = tweets[tweetDates[tweetDates.count - 1 - i]] {
                 sortedTweets.append(reply)
             }
@@ -182,7 +182,7 @@ class TweetTimeline {
         
         //Create the date if it's valid
         if let date = isoDateFormatter.date(from: dateString) {
-            //If you want to make sure I accomplished the original requirement, this will output a non twitter-esque date
+            //Format the date as per the requirements
             let requiredDateFormatter = DateFormatter()
             requiredDateFormatter.dateFormat = Constants.requiredDateFormatString
             return requiredDateFormatter.string(from: date)

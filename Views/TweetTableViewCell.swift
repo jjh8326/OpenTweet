@@ -14,7 +14,7 @@ class TweetTableViewCell: UITableViewCell {
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var dateTimeLabel: UILabel!
     
-    func configureCell(withTweet tweet: Tweet, rowIndex: Int, repliesView: Bool) {
+    func configureCell(withTweet tweet: Tweet, rowIndex: Int) {
         //If the tweet has an id then its a normal tweet, configure the cell
         if (tweet.id != "") {
             self.authorLabel.text = tweet.author
@@ -22,10 +22,10 @@ class TweetTableViewCell: UITableViewCell {
             //Make the content text pretty
             self.stylizeText(withTweetContent: tweet.content)
             
-            //Set the default avatar for now
+            //Set the default avatar, avatar will get set later if there is a valid avatar url
             self.avatarImageView.image = UIImage(named: Constants.defaultAvatarName)
             
-            //Make the avatar's image circular
+            //Make the avatar's image view circular
             self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.width / 2
             
             if (tweet.avatarURL != "") {
@@ -46,8 +46,8 @@ class TweetTableViewCell: UITableViewCell {
             //If the cell has no ID then set cell up for the "no replies" view
             self.contentLabel.text = tweet.content
             self.authorLabel.isHidden = true
-            self.dateTimeLabel.isHidden = true
             self.avatarImageView.isHidden = true
+            self.dateTimeLabel.isHidden = true
         }
         
         //Potential work-around to fix iOS issue where cell image does not load
@@ -69,9 +69,10 @@ class TweetTableViewCell: UITableViewCell {
                 //The if / else if checks could be combined into one and not need the else if, I left it like this in case there is a desire to customize the link text further
                 //Both username highlights and link highlights are same color because this is similar to what twitter does
                 if (wordList[i].hasPrefix(Constants.atPrefix)) {
-                    //"Highlight" username mentions
+                    //Stylize username mentions
                     attributedWord = NSMutableAttributedString(string: wordList[i], attributes: [.foregroundColor: UIColor.cyan])
                 } else if (wordList[i].hasPrefix(Constants.httpPrefix)) || (wordList[i].hasPrefix(Constants.httpsPrefix)) {
+                    //Stylize links
                     attributedWord = NSMutableAttributedString(string: wordList[i], attributes: [.foregroundColor: UIColor.cyan])
                 }
                 
@@ -82,7 +83,7 @@ class TweetTableViewCell: UITableViewCell {
                 //Add the word to the full text
                 attributedTextContent.append(attributedWord)
             }
-            //Set the content labels attributed text
+            //Set the content label's attributed text
             self.contentLabel.attributedText = attributedTextContent
         } else {
             //If the tweet doesn't have mentions or links then just set original content as attributed text

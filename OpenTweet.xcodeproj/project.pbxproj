@@ -132,10 +132,10 @@
 			isa = PBXGroup;
 			children = (
 				009C4C6B1D9F0CD600F0BC6C /* AppDelegate.swift */,
-				009C4C6F1D9F0CD600F0BC6C /* Main.storyboard */,
-				009C4C741D9F0CD600F0BC6C /* LaunchScreen.storyboard */,
 				009C4C721D9F0CD600F0BC6C /* Assets.xcassets */,
 				009C4C771D9F0CD600F0BC6C /* Info.plist */,
+				009C4C741D9F0CD600F0BC6C /* LaunchScreen.storyboard */,
+				009C4C6F1D9F0CD600F0BC6C /* Main.storyboard */,
 			);
 			path = OpenTweet;
 			sourceTree = "<group>";
@@ -144,8 +144,8 @@
 			isa = PBXGroup;
 			children = (
 				009C4C821D9F0CD600F0BC6C /* Info.plist */,
-				D86FDAB52715FD93007DEC90 /* TweetTimelineTests.swift */,
 				D879737C2717314E00554171 /* TweetTests.swift */,
+				D86FDAB52715FD93007DEC90 /* TweetTimelineTests.swift */,
 			);
 			path = OpenTweetTests;
 			sourceTree = "<group>";
@@ -153,8 +153,8 @@
 		009C4C8A1D9F0CD600F0BC6C /* OpenTweetUITests */ = {
 			isa = PBXGroup;
 			children = (
-				009C4C8B1D9F0CD600F0BC6C /* OpenTweetUITests.swift */,
 				009C4C8D1D9F0CD600F0BC6C /* Info.plist */,
+				009C4C8B1D9F0CD600F0BC6C /* OpenTweetUITests.swift */,
 			);
 			path = OpenTweetUITests;
 			sourceTree = "<group>";
@@ -186,8 +186,8 @@
 		D88FB568270FE0AF0097D4BE /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				D88FB569270FE0CF0097D4BE /* TweetTimeline.swift */,
 				D86FDABA2716321B007DEC90 /* Tweet.swift */,
+				D88FB569270FE0CF0097D4BE /* TweetTimeline.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -195,9 +195,9 @@
 		D88FB56D2710FE690097D4BE /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				009C4C6D1D9F0CD600F0BC6C /* TweetTimelineViewController.swift */,
-				D88FB56E2710FF190097D4BE /* TweetTableViewCell.swift */,
 				D884B6C32714D05D006D7679 /* TweetRepliesViewController.swift */,
+				D88FB56E2710FF190097D4BE /* TweetTableViewCell.swift */,
+				009C4C6D1D9F0CD600F0BC6C /* TweetTimelineViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

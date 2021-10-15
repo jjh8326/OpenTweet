@@ -34,4 +34,6 @@ class Constants {
     static let newLine = "\n"
     static let httpPrefix = "http://"
     static let httpsPrefix = "https://"
+    
+    static let tweetCellIdentifier = "TweetCell"
 }

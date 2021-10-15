@@ -16,6 +16,7 @@ Future updates (if I had infinite time):
 - I would like to redo the constraints and make them code based so I can reuse them when need be and design the layout for a table view cell via code instead of interface builder (I know the duplicate table view is not ideal, I have learned alot doing this assignment and would not do that again - that is essentially making constraints hardcoded which is bad)
 - I would like to add an error logging class that could be toggled on or off
 - More time to proof read my code would have been great XD
+- Finally, I would like to make the link in the tweet tappable
 
 Notes:
 - I do not squash commits and I also commit frequently, I try to have good commit messages.
