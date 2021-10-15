@@ -72,7 +72,7 @@ class TweetRepliesViewController: UIViewController {
 
 extension TweetRepliesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(
+        let cell = tableView.dequeueReusableCell(
           withIdentifier: "TweetCell",
           for: indexPath) as! TweetTableViewCell
         
@@ -83,15 +83,8 @@ extension TweetRepliesViewController: UITableViewDataSource {
             tweet = tweetThread[indexPath.row]
         }
         
-        //Load the no replies cell
-        if (tweet.id == "") {
-            cell.authorDateLabel.text = ""
-            cell.contentLabel.text = tweet.content
-            cell.avatarImageView.isHidden = true
-        } else {
-            //Load the tweet cell
-            cell = TweetCellHelper.setupWith(cell: cell, tweet: tweet, rowIndex: indexPath.row, repliesView: true)
-        }
+        //Configure the tweet cell
+        cell.configureWith(tweet: tweet, rowIndex: indexPath.row, repliesView: true)
         
         return cell
     }

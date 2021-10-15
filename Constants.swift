@@ -19,6 +19,7 @@ class Constants {
     static let inReplyToKey = "inReplyTo"
 
     static let isoDateFormatString = "yyyy-MM-dd'T'HH:mm:ssZ"
+    static let requiredDateFormatString = "MM/dd/YYY"
     
     static let rowIndexKey = "rowIndex"
     static let noRepliesMessage = "There are no replies."
@@ -28,4 +29,9 @@ class Constants {
     
     static let tweetTimelineKey = "tweetTimeline"
     static let tweetThreadKey = "tweetThread"
+    
+    static let atPrefix = "@"
+    static let newLine = "\n"
+    static let httpPrefix = "http://"
+    static let httpsPrefix = "https://"
 }

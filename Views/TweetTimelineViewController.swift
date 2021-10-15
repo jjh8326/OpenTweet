@@ -72,7 +72,7 @@ class TweetTimelineViewController: UIViewController {
 
 extension TweetTimelineViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(
+        let cell = tableView.dequeueReusableCell(
           withIdentifier: "TweetCell",
           for: indexPath) as! TweetTableViewCell
         
@@ -83,8 +83,8 @@ extension TweetTimelineViewController: UITableViewDataSource {
             tweet = tweetTimeline[indexPath.row]
         }
         
-        //Get the tweet
-        cell = TweetCellHelper.setupWith(cell: cell, tweet: tweet, rowIndex: indexPath.row, repliesView: false)
+        //Configure the tweet cell
+        cell.configureWith(tweet: tweet, rowIndex: indexPath.row, repliesView: false)
         
         return cell
     }

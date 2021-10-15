@@ -10,7 +10,7 @@ import UIKit
 
 class AvatarFetcher {
     //Get the avatar image
-    static func getAvatarWith(avatarURLString: String, rowIndex: Int) {
+    static func fetchAvatarWith(avatarURLString: String, rowIndex: Int) {
         //Get the avatar's image URL from the tweet
         if let avatarURL = URL(string: avatarURLString) {
             //Download the data using a valid URL
