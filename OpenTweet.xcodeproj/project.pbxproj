@@ -28,6 +28,7 @@
 		D88FB56C2710F5AE0097D4BE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88FB56B2710F5AE0097D4BE /* Constants.swift */; };
 		D88FB56F2710FF190097D4BE /* TweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88FB56E2710FF190097D4BE /* TweetTableViewCell.swift */; };
 		D8DE378E2719488C00B05635 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DE378D2719488C00B05635 /* UIColorExtension.swift */; };
+		D8DE378F27194AB400B05635 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DE378D2719488C00B05635 /* UIColorExtension.swift */; };
 		D8EB172227115F38007A8074 /* NotificationNameExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EB172127115F38007A8074 /* NotificationNameExtension.swift */; };
 		D8F739E32716933C001A4B02 /* TweetTimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009C4C6D1D9F0CD600F0BC6C /* TweetTimelineViewController.swift */; };
 		D8F739E42716934F001A4B02 /* TweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88FB56E2710FF190097D4BE /* TweetTableViewCell.swift */; };
@@ -368,6 +369,7 @@
 				D86FDAD4271636FF007DEC90 /* AvatarFetcher.swift in Sources */,
 				D8F739E527169381001A4B02 /* TweetRepliesViewController.swift in Sources */,
 				D86FDAB82715FE8D007DEC90 /* Constants.swift in Sources */,
+				D8DE378F27194AB400B05635 /* UIColorExtension.swift in Sources */,
 				D86FDAB92715FEA3007DEC90 /* NotificationNameExtension.swift in Sources */,
 				D8263F892717777400DFB4F9 /* Tweet.swift in Sources */,
 			);
